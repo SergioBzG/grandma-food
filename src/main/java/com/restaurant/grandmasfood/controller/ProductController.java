@@ -2,12 +2,13 @@ package com.restaurant.grandmasfood.controller;
 
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+
 
 @RestController
 @RequestMapping(path = "/products")
@@ -21,7 +22,14 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        boolean exists = this.productService.existsByFantansyName(productDto.getFantasyName());
+        if(exists)
+            // TODO : question in training session
+            // Is required a message ?
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+
         return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
+
     }
 
     @GetMapping

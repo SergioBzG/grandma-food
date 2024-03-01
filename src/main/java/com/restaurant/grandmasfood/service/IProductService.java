@@ -14,4 +14,6 @@ public interface IProductService {
     String deleteProduct();
 
     List<ProductDto> findAll();
+
+    boolean existsByFantansyName(String fantasyName);
 }

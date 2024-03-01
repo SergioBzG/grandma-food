@@ -57,5 +57,8 @@ public class ProductServiceImpl implements IProductService {
         return null;
     }
 
-
+    @Override
+    public boolean existsByFantansyName(String fantasyName) {
+        return this.productRepository.existsByFantasyName(fantasyName);
+    }
 }
