@@ -4,7 +4,7 @@ import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IClientServiceImpl implements IClientService {
+public class ClientServiceImpl implements IClientService {
 
     @Override
     public String getClient() {
