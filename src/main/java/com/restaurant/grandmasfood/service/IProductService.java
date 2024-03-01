@@ -1,6 +1,5 @@
 package com.restaurant.grandmasfood.service;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.model.ProductDto;
 
 import java.util.List;

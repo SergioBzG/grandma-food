@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.repository;
 
 import com.restaurant.grandmasfood.entity.CategoryProduct;
-import com.restaurant.grandmasfood.entity.ProductEntity;
+import com.restaurant.grandmasfood.entity.Product;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
@@ -15,45 +15,45 @@ public class ProductRepositoryImpl implements IProductRepository {
 
     //DUmmy = Datos quemados
 
-    List<ProductEntity> productEntityList = null;
+    List<Product> productList = null;
 
 
     @Override
-    public List<ProductEntity> getProductEntityList() {
-        return productEntityList;
+    public List<Product> getProductEntityList() {
+        return productList;
     }
 
     @Override
-    public ProductEntity findProductById(Long id){
-        return productEntityList.stream().filter(p-> Objects.equals(p.getId(), id)).findFirst().orElse(null);
+    public Product findProductById(Long id){
+        return productList.stream().filter(p-> Objects.equals(p.getId(), id)).findFirst().orElse(null);
 
     }
 
     @PostConstruct
     public void init(){
-        productEntityList = List.of(
-                ProductEntity.builder()
+        productList = List.of(
+                Product.builder()
                         .id(1L)
-                        .name("Hamburguesa Doble Carne")
-                        .uuid(UUID.randomUUID().toString())
+                        .fantasyName("Hamburguesa Doble Carne")
+                        .uuid(UUID.randomUUID())
                         .description("Piña")
                         .category(CategoryProduct.HAMBURGUERS_AND_HOTDOGS)
                         .price(19000.0)
                         .available(true)
                         .build(),
-                ProductEntity.builder()
+                Product.builder()
                         .id(2L)
-                        .name("Hamburgesa con Queso")
-                        .uuid(UUID.randomUUID().toString())
+                        .fantasyName("Hamburgesa con Queso")
+                        .uuid(UUID.randomUUID())
                         .description("Jamon")
                         .category(CategoryProduct.HAMBURGUERS_AND_HOTDOGS)
                         .price(15000.0)
                         .available(true)
                         .build(),
-                ProductEntity.builder()
+                Product.builder()
                         .id(3L)
-                        .name("Hot Dog")
-                        .uuid(UUID.randomUUID().toString())
+                        .fantasyName("Hot Dog")
+                        .uuid(UUID.randomUUID())
                         .description("Papas + Gaseosa")
                         .category(CategoryProduct.HAMBURGUERS_AND_HOTDOGS)
                         .price(15000.0)

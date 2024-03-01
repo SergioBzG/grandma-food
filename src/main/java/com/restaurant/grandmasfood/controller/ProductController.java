@@ -1,8 +1,6 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.model.ProductDto;
-import com.restaurant.grandmasfood.service.IProductService;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

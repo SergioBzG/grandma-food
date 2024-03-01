@@ -16,12 +16,12 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "products")
-public class ProductEntity {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.UUID)
+//    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true)
     private UUID uuid;
 
@@ -49,14 +49,14 @@ public class ProductEntity {
     private Boolean available;
 
     @OneToMany(mappedBy = "product")
-    private Set<OrderEntity> orders;
+    private Set<Order> orders;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity that = (ProductEntity) o;
+        Product that = (Product) o;
         return Objects.equals(id, that.id) && Objects.equals(uuid, that.uuid) && Objects.equals(fantasyName, that.fantasyName) && category == that.category && Objects.equals(description, that.description) && Objects.equals(price, that.price) && Objects.equals(available, that.available) && Objects.equals(orders, that.orders);
     }
 

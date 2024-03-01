@@ -1,11 +1,11 @@
 package com.restaurant.grandmasfood.repository;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
+import com.restaurant.grandmasfood.entity.Product;
 
 import java.util.List;
 
 public interface IProductRepository {
-    List<ProductEntity> getProductEntityList();
+    List<Product> getProductEntityList();
 
-    ProductEntity findProductById(Long id);
+    Product findProductById(Long id);
 }
