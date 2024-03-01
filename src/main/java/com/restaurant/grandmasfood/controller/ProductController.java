@@ -3,6 +3,8 @@ package com.restaurant.grandmasfood.controller;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,19 +13,22 @@ import java.util.List;
 @RequestMapping(path = "/products")
 public class ProductController {
 
-    @Autowired
-    ProductServiceImpl productService;
+    private final ProductServiceImpl productService;
+
+    public ProductController(final ProductServiceImpl productService) {
+        this.productService = productService;
+    }
 
     @PostMapping
-    public String createProduct() {
-        return this.productService.createProduct();
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
     }
 
     @GetMapping
     public List<ProductDto> listProducts() {
-
         return this.productService.findAll();
     }
+
 
 
     @PutMapping(path = "/{uuid}")

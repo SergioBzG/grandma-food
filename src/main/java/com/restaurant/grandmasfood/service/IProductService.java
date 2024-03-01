@@ -5,7 +5,7 @@ import com.restaurant.grandmasfood.model.ProductDto;
 import java.util.List;
 
 public interface IProductService {
-    String createProduct();
+    ProductDto createProduct(ProductDto productDto);
 
     String getProduct();
 

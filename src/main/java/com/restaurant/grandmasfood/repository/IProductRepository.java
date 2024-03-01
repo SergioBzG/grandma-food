@@ -1,11 +1,8 @@
 package com.restaurant.grandmasfood.repository;
 
 import com.restaurant.grandmasfood.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface IProductRepository extends JpaRepository<Product, Long> {
 
-public interface IProductRepository {
-    List<Product> getProductEntityList();
-
-    Product findProductById(Long id);
 }
