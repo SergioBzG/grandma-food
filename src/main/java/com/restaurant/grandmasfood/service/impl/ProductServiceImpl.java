@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    //@Autowired
+
     IProductRepository productRepository = null;
 
     Mapper<ProductEntity, ProductDto> productMapper;
