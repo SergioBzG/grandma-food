@@ -5,6 +5,8 @@ import com.restaurant.grandmasfood.service.impl.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/clients")
 public class ClientController {
@@ -34,4 +36,11 @@ public class ClientController {
 
         return clientService.deleteClient();
     }
+
+    @GetMapping
+    public List<ClientDto> clientsList(){
+        return this.clientService.findAllClients();
+    }
+
+
 }

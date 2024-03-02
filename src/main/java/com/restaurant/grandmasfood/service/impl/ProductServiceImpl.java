@@ -4,9 +4,7 @@ import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
-import com.restaurant.grandmasfood.repository.ProductRepositoryImpl;
 import com.restaurant.grandmasfood.service.IProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

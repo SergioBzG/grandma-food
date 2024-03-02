@@ -1,7 +1,8 @@
-package com.restaurant.grandmasfood.repository;
+package com.restaurant.grandmasfood.repository.impl;
 
 import com.restaurant.grandmasfood.entity.CategoryProduct;
 import com.restaurant.grandmasfood.entity.ProductEntity;
+import com.restaurant.grandmasfood.repository.IProductRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 

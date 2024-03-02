@@ -1,10 +1,9 @@
-package com.restaurant.grandmasfood.entity;
+package com.restaurant.grandmasfood.model;
 
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.UUID;
+
 
 
 @Builder
@@ -12,13 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrderEntity {
+public class OrderDto {
 
-    private Long id;
-    private UUID uuid;
     private Integer quantity;
-    private ClientEntity client;
-    private ProductEntity product;
     private String additionalInfo;
     private Double subTotal;
     private Double iva;
@@ -26,4 +21,5 @@ public class OrderEntity {
     private Boolean delivered;
     private LocalDate dateOrdered;
     private LocalDate dateDelivered;
+
 }

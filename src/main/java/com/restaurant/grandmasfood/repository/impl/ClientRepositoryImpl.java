@@ -1,7 +1,8 @@
-package com.restaurant.grandmasfood.repository;
+package com.restaurant.grandmasfood.repository.impl;
 
 import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.entity.ProductEntity;
+import com.restaurant.grandmasfood.repository.IClientRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class ClientRepositoryImpl implements IClientRepository{
+public class ClientRepositoryImpl implements IClientRepository {
 
 
     List<ClientEntity> clientEntityList = null;
