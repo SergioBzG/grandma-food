@@ -5,7 +5,7 @@ import com.restaurant.grandmasfood.model.ProductDto;
 import java.util.List;
 
 public interface IProductService {
-    String createProduct();
+    ProductDto createProduct(ProductDto productDto);
 
     String getProduct();
 
@@ -14,4 +14,6 @@ public interface IProductService {
     String deleteProduct();
 
     List<ProductDto> findAll();
+
+    boolean existsByFantansyName(String fantasyName);
 }

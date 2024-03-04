@@ -1,5 +1,9 @@
 package com.restaurant.grandmasfood.service;
 
+import com.restaurant.grandmasfood.model.ClientDto;
+
+import java.util.List;
+
 public interface IClientService {
     String getClient();
 
@@ -8,4 +12,8 @@ public interface IClientService {
     String updateClient();
 
     String deleteClient();
+
+    List<ClientDto> findAllClients();
+
+
 }

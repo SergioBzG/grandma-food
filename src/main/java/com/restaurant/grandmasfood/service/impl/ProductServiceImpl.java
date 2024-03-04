@@ -8,25 +8,27 @@ import com.restaurant.grandmasfood.service.IProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements IProductService {
 
     //@Autowired
-    IProductRepository productRepository = null;
+    IProductRepository productRepository;
 
     Mapper<Product, ProductDto> productMapper;
 
     public ProductServiceImpl(IProductRepository productRepository, Mapper<Product, ProductDto> productMapper) {
-
         this.productMapper = productMapper;
         this.productRepository = productRepository;
 
     }
 
     @Override
-    public String createProduct() {
-        return "Product created";
+    public ProductDto createProduct(ProductDto productDto) {
+        productDto.setUuid(UUID.randomUUID());
+        Product productSaved = this.productRepository.save(productMapper.mapFromDto(productDto));
+        return productMapper.mapToDto(productSaved);
     }
 
 
@@ -42,7 +44,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductDto> findAll() {
-        return productRepository.getProductEntityList().stream().map(productMapper::mapToDto).toList();
+        return null;
     }
 
     @Override
@@ -52,8 +54,11 @@ public class ProductServiceImpl implements IProductService {
 
 
     public ProductDto getById(Long id) {
-        return productMapper.mapToDto(productRepository.findProductById(id));
+        return null;
     }
 
-
+    @Override
+    public boolean existsByFantansyName(String fantasyName) {
+        return this.productRepository.existsByFantasyName(fantasyName);
+    }
 }
