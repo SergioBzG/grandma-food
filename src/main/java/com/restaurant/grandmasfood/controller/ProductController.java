@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.exceptions.ExceptionResponse;
-import com.restaurant.grandmasfood.exceptions.ProductDoesNotExistException;
+import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
+import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;

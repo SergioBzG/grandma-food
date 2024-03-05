@@ -1,4 +1,4 @@
-package com.restaurant.grandmasfood.exceptions;
+package com.restaurant.grandmasfood.exception.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

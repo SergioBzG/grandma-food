@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.Product;
-import com.restaurant.grandmasfood.exceptions.ProductDoesNotExistException;
+import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
