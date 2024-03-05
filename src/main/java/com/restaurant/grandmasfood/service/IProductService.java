@@ -1,19 +1,17 @@
 package com.restaurant.grandmasfood.service;
 
+import com.restaurant.grandmasfood.exceptions.ProductDoesNotExist;
 import com.restaurant.grandmasfood.model.ProductDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IProductService {
     ProductDto createProduct(ProductDto productDto);
-
-    String getProduct();
-
+    ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExist;
     String updateProduct();
-
-    String deleteProduct();
-
+    void deleteProduct(UUID uuid) throws ProductDoesNotExist;
     List<ProductDto> findAll();
 
-    boolean existsByFantansyName(String fantasyName);
+    boolean existsByFantasyName(String fantasyName);
 }

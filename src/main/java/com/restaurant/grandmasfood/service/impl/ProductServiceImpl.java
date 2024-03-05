@@ -1,19 +1,21 @@
 package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.exceptions.ProductDoesNotExist;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    //@Autowired
     IProductRepository productRepository;
 
     Mapper<Product, ProductDto> productMapper;
@@ -27,8 +29,16 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductDto createProduct(ProductDto productDto) {
         productDto.setUuid(UUID.randomUUID());
+        productDto.setFantasyName(productDto.getFantasyName().toUpperCase());
         Product productSaved = this.productRepository.save(productMapper.mapFromDto(productDto));
         return productMapper.mapToDto(productSaved);
+    }
+
+    @Override
+    public ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExist {
+        Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
+        return productOptional.map(product -> this.productMapper.mapToDto(product)
+        ).orElseThrow( () -> new ProductDoesNotExist(uuid));
     }
 
 
@@ -37,9 +47,14 @@ public class ProductServiceImpl implements IProductService {
         return "Product updated";
     }
 
+    @Transactional
     @Override
-    public String deleteProduct() {
-        return "Product deleted";
+    public void deleteProduct(UUID uuid) throws ProductDoesNotExist {
+        Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
+        if(productOptional.isEmpty())
+            throw new ProductDoesNotExist(uuid);
+        Product product =  productOptional.get();
+        product.setAvailable(false);
     }
 
     @Override
@@ -47,18 +62,10 @@ public class ProductServiceImpl implements IProductService {
         return null;
     }
 
-    @Override
-    public String getProduct() {
-        return "Product";
-    }
 
-
-    public ProductDto getById(Long id) {
-        return null;
-    }
 
     @Override
-    public boolean existsByFantansyName(String fantasyName) {
-        return this.productRepository.existsByFantasyName(fantasyName);
+    public boolean existsByFantasyName(String fantasyName) {
+        return this.productRepository.existsByFantasyName(fantasyName.toUpperCase());
     }
 }
