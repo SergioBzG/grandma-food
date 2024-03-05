@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.controller;
 
 import com.restaurant.grandmasfood.exceptions.ExceptionResponse;
-import com.restaurant.grandmasfood.exceptions.ProductDoesNotExist;
+import com.restaurant.grandmasfood.exceptions.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,25 +46,19 @@ public class ProductController {
             return new ResponseEntity<>(productService.getProductByUuid(correctUuid), HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return new ResponseEntity<>(
-                    new ExceptionResponse("P1343", LocalDate.now(), "Invalid uuid format", e.getMessage()),
+                    new ExceptionResponse("P1343", LocalDateTime.now(), "Invalid uuid format", Arrays.toString(e.getStackTrace())),
                     HttpStatus.BAD_REQUEST);
-        } catch (ProductDoesNotExist e) {
+        } catch (ProductDoesNotExistException e) {
             return new ResponseEntity<>(
-                    new ExceptionResponse(e.getCode(), LocalDate.now(), e.getMessage(), e.getClass().getName()),
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
                     HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping
-    public List<ProductDto> listProducts() {
-        return this.productService.findAll();
     }
 
     @PutMapping(path = "/{uuid}")
     public String updateClient(@PathVariable("uuid") String uuid) {
         return productService.updateProduct();
     }
-
 
     @DeleteMapping(path = "/{uuid}")
     public ResponseEntity deleteProduct(@PathVariable String uuid){
@@ -74,13 +69,17 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch(IllegalArgumentException e) {
             return new ResponseEntity<>(
-                    new ExceptionResponse("P1343", LocalDate.now(), "Invalid uuid format", e.getMessage()),
+                    new ExceptionResponse("P1343", LocalDateTime.now(), "Invalid uuid format", Arrays.toString(e.getStackTrace())),
                     HttpStatus.BAD_REQUEST);
-        } catch (ProductDoesNotExist e) {
+        } catch (ProductDoesNotExistException e) {
             return new ResponseEntity<>(
-                    new ExceptionResponse(e.getCode(), LocalDate.now(), e.getMessage(), e.getClass().getName()),
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
                     HttpStatus.BAD_REQUEST);
         }
     }
 
+    @GetMapping
+    public List<ProductDto> listProducts() {
+        return this.productService.findAll();
+    }
 }

@@ -10,5 +10,4 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByFantasyName(String fantasyName);
     Optional<Product> findByUuid(UUID uuid);
-    void deleteByUuid(UUID uuid);
 }

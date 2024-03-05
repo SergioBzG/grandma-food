@@ -1,10 +1,13 @@
 package com.restaurant.grandmasfood.exceptions;
 
+import lombok.Getter;
 
-public class InvalidUuidFormat extends Exception {
+@Getter
+public class InvalidUuidFormatException extends Exception {
     private final String code = "EP100";
 
-    public InvalidUuidFormat() {
+    public InvalidUuidFormatException() {
         super("Invalid uuid format");
     }
+
 }

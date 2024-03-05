@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.Product;
-import com.restaurant.grandmasfood.exceptions.ProductDoesNotExist;
+import com.restaurant.grandmasfood.exceptions.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
@@ -35,10 +35,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExist {
+    public ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExistException {
         Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
         return productOptional.map(product -> this.productMapper.mapToDto(product)
-        ).orElseThrow( () -> new ProductDoesNotExist(uuid));
+        ).orElseThrow( () -> new ProductDoesNotExistException(uuid));
     }
 
 
@@ -49,17 +49,19 @@ public class ProductServiceImpl implements IProductService {
 
     @Transactional
     @Override
-    public void deleteProduct(UUID uuid) throws ProductDoesNotExist {
+    public void deleteProduct(UUID uuid) throws ProductDoesNotExistException {
         Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
         if(productOptional.isEmpty())
-            throw new ProductDoesNotExist(uuid);
+            throw new ProductDoesNotExistException(uuid);
         Product product =  productOptional.get();
         product.setAvailable(false);
     }
 
     @Override
     public List<ProductDto> findAll() {
-        return null;
+        return this.productRepository.findAll().stream()
+                .map(this.productMapper::mapToDto)
+                .toList();
     }
 
 

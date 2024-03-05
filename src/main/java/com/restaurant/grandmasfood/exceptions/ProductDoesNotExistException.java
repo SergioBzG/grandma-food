@@ -1,16 +1,16 @@
 package com.restaurant.grandmasfood.exceptions;
 
+import lombok.Getter;
+
 import java.util.UUID;
 
 
-public class ProductDoesNotExist extends Exception {
+@Getter
+public class ProductDoesNotExistException extends Exception {
     private final String code = "EP100";
 
-    public ProductDoesNotExist(UUID uuid) {
+    public ProductDoesNotExistException(UUID uuid) {
         super("Product with uuid " + uuid + " does not exist");
     }
 
-    public String getCode() {
-        return code;
-    }
 }

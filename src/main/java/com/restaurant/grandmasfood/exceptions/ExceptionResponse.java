@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 public class ExceptionResponse {
     private String code;
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
     private String description;
     private String exception;
 
