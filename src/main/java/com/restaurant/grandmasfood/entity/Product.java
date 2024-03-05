@@ -33,7 +33,6 @@ public class Product {
 
     @Enumerated(EnumType.ORDINAL)
     @NotNull
-    @Size(max = 255)
     private CategoryProduct category;
 
     @NotNull
