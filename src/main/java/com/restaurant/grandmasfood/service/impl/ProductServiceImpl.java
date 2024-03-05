@@ -3,7 +3,7 @@ package com.restaurant.grandmasfood.service.impl;
 import com.restaurant.grandmasfood.entity.Product;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
-import com.restaurant.grandmasfood.exception.utils.Code;
+import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements IProductService {
     public ProductDto createProduct(ProductDto productDto) throws AlreadyExistsException {
         boolean exists = this.existsByFantasyName(productDto.getFantasyName());
         if(exists)
-            throw new AlreadyExistsException(Code.PRODUCT_ALREADY_EXISTS_CODE, "Product", "fantasy name", productDto.getFantasyName());
+            throw new AlreadyExistsException(ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE, "Product", "fantasy name", productDto.getFantasyName());
 
         productDto.setUuid(UUID.randomUUID());
         productDto.setFantasyName(productDto.getFantasyName().toUpperCase());

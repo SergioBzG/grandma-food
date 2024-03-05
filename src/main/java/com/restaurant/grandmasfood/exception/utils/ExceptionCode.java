@@ -1,6 +1,6 @@
 package com.restaurant.grandmasfood.exception.utils;
 
-public interface Code {
+public interface ExceptionCode {
     String CLIENT_ALREADY_EXISTS_CODE = "EC01";
     String PRODUCT_ALREADY_EXISTS_CODE = "EP01";
     String ORDER_ALREADY_EXISTS_CODE = "EO01";
