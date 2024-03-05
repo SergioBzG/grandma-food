@@ -1,5 +1,6 @@
 package com.restaurant.grandmasfood.controller;
 
+import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
@@ -26,16 +27,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity createProduct(@RequestBody ProductDto productDto) {
         // TODO : check all fields are in request body
-        boolean exists = this.productService.existsByFantasyName(productDto.getFantasyName());
-        if(exists)
-            // TODO : question in training session
-            // Is required a message ?
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-
-        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
-
+        try {
+            return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
+                    HttpStatus.CONFLICT
+            );
+        }
     }
 
     @GetMapping(path = "/{uuid}")
