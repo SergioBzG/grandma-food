@@ -6,9 +6,9 @@ import com.restaurant.grandmasfood.model.ClientDto;
 import java.util.Optional;
 
 public interface IClientService {
-    Optional<Client> getClient(String document);
+    Optional<ClientDto> getClient(String document);
 
-    void createClient(Client client);
+    ClientDto createClient(ClientDto clientDto);
 
     void updateClient(String document, Client client);
 

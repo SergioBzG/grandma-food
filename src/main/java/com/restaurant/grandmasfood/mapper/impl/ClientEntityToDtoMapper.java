@@ -1,8 +1,11 @@
-package com.restaurant.grandmasfood.mapper;
+package com.restaurant.grandmasfood.mapper.impl;
 
 import com.restaurant.grandmasfood.entity.Client;
+import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientEntityToDtoMapper implements Mapper<Client, ClientDto> {
 
 

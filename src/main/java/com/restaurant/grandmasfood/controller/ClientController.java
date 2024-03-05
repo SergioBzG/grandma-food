@@ -18,8 +18,8 @@ public class ClientController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping
-    public void createClient(@RequestBody Client client) {
-      clientService.createClient(client);
+    public void createClient(@RequestBody ClientDto clientDto) {
+      clientService.createClient(clientDto);
     }
 
    /* @GetMapping(path = "/{document}")
@@ -28,7 +28,7 @@ public class ClientController {
     }*/
 
     @GetMapping(path = "/{document}")
-    public Optional<Client> getClient(@PathVariable("document") String document){
+    public Optional<ClientDto> getClient(@PathVariable("document") String document){
         return clientService.getClient(document);
     }
 

@@ -1,7 +1,8 @@
-package com.restaurant.grandmasfood.mapper;
+package com.restaurant.grandmasfood.mapper.impl;
 
 
 import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
 import org.springframework.stereotype.Component;
 

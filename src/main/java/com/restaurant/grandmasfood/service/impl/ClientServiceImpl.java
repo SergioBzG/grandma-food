@@ -1,8 +1,12 @@
 package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.Client;
+import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
+import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IClientRepository;
+import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +17,29 @@ import java.util.Optional;
 public class ClientServiceImpl implements IClientService {
 
     @Autowired
-    IClientRepository clientRepository = null;
+    IClientRepository clientRepository;
+
+    @Autowired
+    Mapper<Client, ClientDto> clientMapper;
 
     @Override
-    public Optional<Client> getClient(String document) {
-        return clientRepository.findByDocumento(document);
+    public Optional<ClientDto> getClient(String document) {
+        //return clientRepository.findByDocumento(document);
+        Optional<Client> dtoClient = this.clientRepository.findByDocumento(document);
+        return dtoClient.map(client -> this.clientMapper.mapToDto(client));
     }
 
     @Override
-    public void createClient(Client client) {
-        clientRepository.save(client);
+    public ClientDto createClient(ClientDto clientDto) {
+        clientDto.setDocument(clientDto.getDocument());
+        clientDto.setName(clientDto.getName());
+        clientDto.setEmail(clientDto.getEmail());
+        clientDto.setPhone(clientDto.getPhone());
+        clientDto.setDeliveryAddress(clientDto.getDeliveryAddress());
+        Client clientSaved = this.clientRepository.save(clientMapper.mapFromDto(clientDto));
+        return clientMapper.mapToDto(clientSaved);
+
+        //clientRepository.save(clientDto);
     }
 
     @Override
@@ -37,7 +54,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void deleteClient(String document) {
-        Client client = clientRepository.findByDocumento(document).get();
+        Client client = this.clientRepository.findByDocumento(document).get();
         clientRepository.delete(client);
     }
 }
