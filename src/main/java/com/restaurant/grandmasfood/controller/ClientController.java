@@ -1,8 +1,13 @@
 package com.restaurant.grandmasfood.controller;
 
+import com.restaurant.grandmasfood.entity.Client;
+import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/clients")
@@ -11,23 +16,31 @@ public class ClientController {
     @Autowired
     IClientService clientService;
 
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping
-    public String createClient() {
-        return clientService.createClient();
+    public void createClient(@RequestBody Client client) {
+      clientService.createClient(client);
     }
+
+   /* @GetMapping(path = "/{document}")
+    public Optional<Client> getClient(@PathVariable("document") String document) {
+        return clientService.getClient(document);
+    }*/
 
     @GetMapping(path = "/{document}")
-    public String getClient(@PathVariable("document") String document) {
-        return clientService.getClient();
+    public Optional<Client> getClient(@PathVariable("document") String document){
+        return clientService.getClient(document);
     }
 
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PutMapping(path = "/{document}")
-    public String updateClient(@PathVariable("document") String document) {
-        return clientService.updateClient();
+    public void updateClient(@PathVariable("document") String document, @RequestBody Client client) {
+        clientService.updateClient(document,client);
     }
 
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{document}")
-    public String deleteClient(@PathVariable("document") String document) {
-        return clientService.deleteClient();
+    public void deleteClient(@PathVariable("document") String document) {
+        clientService.deleteClient(document);
     }
 }
