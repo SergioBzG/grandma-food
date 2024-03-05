@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "products")
-public class Product {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,20 +47,20 @@ public class Product {
     @NotNull
     private Boolean available;
 
-    @OneToMany(mappedBy = "product")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "productEntity")
+    private Set<OrderEntity> orderEntities;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product that = (Product) o;
-        return Objects.equals(id, that.id) && Objects.equals(uuid, that.uuid) && Objects.equals(fantasyName, that.fantasyName) && category == that.category && Objects.equals(description, that.description) && Objects.equals(price, that.price) && Objects.equals(available, that.available) && Objects.equals(orders, that.orders);
+        ProductEntity that = (ProductEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(uuid, that.uuid) && Objects.equals(fantasyName, that.fantasyName) && category == that.category && Objects.equals(description, that.description) && Objects.equals(price, that.price) && Objects.equals(available, that.available) && Objects.equals(orderEntities, that.orderEntities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uuid, fantasyName, category, description, price, available, orders);
+        return Objects.hash(id, uuid, fantasyName, category, description, price, available, orderEntities);
     }
 }

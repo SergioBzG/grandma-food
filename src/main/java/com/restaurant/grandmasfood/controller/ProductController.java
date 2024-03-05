@@ -4,6 +4,7 @@ import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
+import com.restaurant.grandmasfood.service.IProductService;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @RequestMapping(path = "/products")
 public class ProductController {
 
-    private final ProductServiceImpl productService;
+    private final IProductService productService;
 
     public ProductController(final ProductServiceImpl productService) {
         this.productService = productService;

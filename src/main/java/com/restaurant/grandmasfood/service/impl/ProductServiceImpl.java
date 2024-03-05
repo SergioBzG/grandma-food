@@ -1,6 +1,6 @@
 package com.restaurant.grandmasfood.service.impl;
 
-import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
@@ -20,9 +20,9 @@ public class ProductServiceImpl implements IProductService {
 
     IProductRepository productRepository;
 
-    Mapper<Product, ProductDto> productMapper;
+    Mapper<ProductEntity, ProductDto> productMapper;
 
-    public ProductServiceImpl(IProductRepository productRepository, Mapper<Product, ProductDto> productMapper) {
+    public ProductServiceImpl(IProductRepository productRepository, Mapper<ProductEntity, ProductDto> productMapper) {
         this.productMapper = productMapper;
         this.productRepository = productRepository;
 
@@ -36,13 +36,13 @@ public class ProductServiceImpl implements IProductService {
 
         productDto.setUuid(UUID.randomUUID());
         productDto.setFantasyName(productDto.getFantasyName().toUpperCase());
-        Product productSaved = this.productRepository.save(productMapper.mapFromDto(productDto));
-        return productMapper.mapToDto(productSaved);
+        ProductEntity productEntitySaved = this.productRepository.save(productMapper.mapFromDto(productDto));
+        return productMapper.mapToDto(productEntitySaved);
     }
 
     @Override
     public ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExistException {
-        Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
+        Optional<ProductEntity> productOptional = this.productRepository.findByUuid(uuid);
         return productOptional.map(product -> this.productMapper.mapToDto(product)
         ).orElseThrow( () -> new ProductDoesNotExistException(uuid));
     }
@@ -56,11 +56,11 @@ public class ProductServiceImpl implements IProductService {
     @Transactional
     @Override
     public void deleteProduct(UUID uuid) throws ProductDoesNotExistException {
-        Optional<Product> productOptional = this.productRepository.findByUuid(uuid);
+        Optional<ProductEntity> productOptional = this.productRepository.findByUuid(uuid);
         if(productOptional.isEmpty())
             throw new ProductDoesNotExistException(uuid);
-        Product product =  productOptional.get();
-        product.setAvailable(false);
+        ProductEntity productEntity =  productOptional.get();
+        productEntity.setAvailable(false);
     }
 
     @Override

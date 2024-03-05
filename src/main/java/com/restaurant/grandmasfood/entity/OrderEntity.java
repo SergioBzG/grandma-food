@@ -20,7 +20,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "orders")
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +38,13 @@ public class Order {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_document")
     @NotNull(message = "a client is required")
-    private Client client;
+    private ClientEntity clientEntity;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_uuid")
     @NotNull(message = "a product is required")
-    private Product product;
+    private ProductEntity productEntity;
 
     @NotNull(message = "a product quantity is required")
     private Integer quantity;
@@ -73,12 +73,12 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Order that = (Order) o;
-        return Objects.equals(id, that.id) && Objects.equals(uuid, that.uuid) && Objects.equals(creationDateTime, that.creationDateTime) && Objects.equals(client, that.client) && Objects.equals(product, that.product) && Objects.equals(quantity, that.quantity) && Objects.equals(extraInformation, that.extraInformation) && Objects.equals(subTotal, that.subTotal) && Objects.equals(tax, that.tax) && Objects.equals(grandTotal, that.grandTotal) && Objects.equals(delivered, that.delivered) && Objects.equals(deliveredDate, that.deliveredDate);
+        OrderEntity that = (OrderEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(uuid, that.uuid) && Objects.equals(creationDateTime, that.creationDateTime) && Objects.equals(clientEntity, that.clientEntity) && Objects.equals(productEntity, that.productEntity) && Objects.equals(quantity, that.quantity) && Objects.equals(extraInformation, that.extraInformation) && Objects.equals(subTotal, that.subTotal) && Objects.equals(tax, that.tax) && Objects.equals(grandTotal, that.grandTotal) && Objects.equals(delivered, that.delivered) && Objects.equals(deliveredDate, that.deliveredDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uuid, creationDateTime, client, product, quantity, extraInformation, subTotal, tax, grandTotal, delivered, deliveredDate);
+        return Objects.hash(id, uuid, creationDateTime, clientEntity, productEntity, quantity, extraInformation, subTotal, tax, grandTotal, delivered, deliveredDate);
     }
 }

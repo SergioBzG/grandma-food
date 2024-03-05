@@ -1,7 +1,7 @@
 package com.restaurant.grandmasfood.model;
 
-import com.restaurant.grandmasfood.entity.Client;
-import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.entity.ClientEntity;
+import com.restaurant.grandmasfood.entity.ProductEntity;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,8 +16,8 @@ public class OrderDto {
 
     private UUID uuid;
     private LocalDate creationDateTime;
-    private Client clientDocument;
-    private Product productUuid;
+    private ClientEntity clientDocument;
+    private ProductEntity productUuid;
     private Integer quantity;
     private String extraInformation;
     private Double subTotal;

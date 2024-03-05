@@ -1,13 +1,15 @@
 package com.restaurant.grandmasfood.repository;
 
-import com.restaurant.grandmasfood.entity.Product;
+import com.restaurant.grandmasfood.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IProductRepository extends JpaRepository<Product, Long> {
+@Repository
+public interface IProductRepository extends JpaRepository<ProductEntity, Long> {
 
     boolean existsByFantasyName(String fantasyName);
-    Optional<Product> findByUuid(UUID uuid);
+    Optional<ProductEntity> findByUuid(UUID uuid);
 }

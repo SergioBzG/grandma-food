@@ -1,29 +1,29 @@
 package com.restaurant.grandmasfood.mapper.impl;
 
 
-import com.restaurant.grandmasfood.entity.Client;
+import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientToDtoMapper implements Mapper<Client, ClientDto> {
+public class ClientEntityToDtoMapper implements Mapper<ClientEntity, ClientDto> {
 
 
     @Override
-    public ClientDto mapToDto(Client client) {
+    public ClientDto mapToDto(ClientEntity clientEntity) {
         return ClientDto.builder()
-                .document(client.getDocument())
-                .name(client.getName())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .deliveryAddress(client.getDeliveryAddress())
+                .document(clientEntity.getDocument())
+                .name(clientEntity.getName())
+                .email(clientEntity.getEmail())
+                .phone(clientEntity.getPhone())
+                .deliveryAddress(clientEntity.getDeliveryAddress())
                 .build();
     }
 
     @Override
-    public Client mapFromDto(ClientDto clientDto) {
-        return Client.builder()
+    public ClientEntity mapFromDto(ClientDto clientDto) {
+        return ClientEntity.builder()
                 .document(clientDto.getDocument())
                 .name(clientDto.getName())
                 .email(clientDto.getEmail())

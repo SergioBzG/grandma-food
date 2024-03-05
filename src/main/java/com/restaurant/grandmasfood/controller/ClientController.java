@@ -1,9 +1,8 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.entity.Client;
+import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.service.IClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +12,11 @@ import java.util.Optional;
 @RequestMapping(path = "/clients")
 public class ClientController {
 
-    @Autowired
-    IClientService clientService;
+    private final IClientService clientService;
+
+    public ClientController(IClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping
@@ -34,8 +36,8 @@ public class ClientController {
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PutMapping(path = "/{document}")
-    public void updateClient(@PathVariable("document") String document, @RequestBody Client client) {
-        clientService.updateClient(document,client);
+    public void updateClient(@PathVariable("document") String document, @RequestBody ClientEntity clientEntity) {
+        clientService.updateClient(document, clientEntity);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

@@ -17,7 +17,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "clients")
-public class Client {
+public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -48,20 +48,20 @@ public class Client {
     @Size(max = 500)
     private String deliveryAddress;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "clientEntity")
+    private Set<OrderEntity> orderEntities;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Client that = (Client) o;
-        return Objects.equals(Id, that.Id) && Objects.equals(document, that.document) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(deliveryAddress, that.deliveryAddress) && Objects.equals(orders, that.orders);
+        ClientEntity that = (ClientEntity) o;
+        return Objects.equals(Id, that.Id) && Objects.equals(document, that.document) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(deliveryAddress, that.deliveryAddress) && Objects.equals(orderEntities, that.orderEntities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, document, name, email, phone, deliveryAddress, orders);
+        return Objects.hash(Id, document, name, email, phone, deliveryAddress, orderEntities);
     }
 }
 
