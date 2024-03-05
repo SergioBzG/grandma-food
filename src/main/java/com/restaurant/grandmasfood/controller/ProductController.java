@@ -1,5 +1,8 @@
 package com.restaurant.grandmasfood.controller;
 
+import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
+import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -7,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -21,23 +27,34 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-        boolean exists = this.productService.existsByFantansyName(productDto.getFantasyName());
-        if(exists)
-            // TODO : question in training session
-            // Is required a message ?
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-
-        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
-
+    public ResponseEntity createProduct(@RequestBody ProductDto productDto) {
+        // TODO : check all fields are in request body
+        try {
+            return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
+                    HttpStatus.CONFLICT
+            );
+        }
     }
 
-    @GetMapping
-    public List<ProductDto> listProducts() {
-        return this.productService.findAll();
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity getProduct(@PathVariable String uuid){
+        try {
+            UUID correctUuid = UUID.fromString(uuid);
+            // TODO : check uuid format, response 400 if it is wrong
+            return new ResponseEntity<>(productService.getProductByUuid(correctUuid), HttpStatus.OK);
+        } catch(IllegalArgumentException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse("P1343", LocalDateTime.now(), "Invalid uuid format", Arrays.toString(e.getStackTrace())),
+                    HttpStatus.BAD_REQUEST);
+        } catch (ProductDoesNotExistException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
-
-
 
     @PutMapping(path = "/{uuid}")
     public String updateClient(@PathVariable("uuid") String uuid) {
@@ -45,12 +62,25 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public String deleteClient(@PathVariable("uuid") String uuid) {
-        return productService.deleteProduct();
+    public ResponseEntity deleteProduct(@PathVariable String uuid){
+        try {
+            UUID correctUuid = UUID.fromString(uuid);
+            // TODO : check uuid format, response 400 if it is wrong
+            productService.deleteProduct(correctUuid);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch(IllegalArgumentException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse("P1343", LocalDateTime.now(), "Invalid uuid format", Arrays.toString(e.getStackTrace())),
+                    HttpStatus.BAD_REQUEST);
+        } catch (ProductDoesNotExistException e) {
+            return new ResponseEntity<>(
+                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping(path = "/{id}")
-    public ProductDto getProduct(@PathVariable Long id){
-        return productService.getById(id);
+    @GetMapping
+    public List<ProductDto> listProducts() {
+        return this.productService.findAll();
     }
 }
