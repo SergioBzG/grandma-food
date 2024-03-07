@@ -77,12 +77,14 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public boolean updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp) {
         Optional<OrderEntity> orderOptional = (orderRepository.findByUuid(UUID.fromString(uuid)));
-        if (orderOptional.isEmpty()) {
-            System.out.println("ORDER NOT FOUND");
+        if (orderOptional.isPresent()) {
+            OrderEntity orderEntity = orderOptional.get();
+            orderEntity.setDelivered(true);
+            orderEntity.setDeliveredDate(timestamp);
+            return true;
+
         }
-        OrderEntity orderEntity = orderOptional.get();
-        orderEntity.setDelivered(true);
-        orderEntity.setDeliveredDate(timestamp);
-        return true;
+
+        return false;
     }
 }
