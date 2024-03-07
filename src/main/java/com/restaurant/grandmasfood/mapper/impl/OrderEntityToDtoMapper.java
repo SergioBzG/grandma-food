@@ -1,33 +1,17 @@
 package com.restaurant.grandmasfood.mapper.impl;
 
-import com.restaurant.grandmasfood.entity.ClientEntity;
+
 import com.restaurant.grandmasfood.entity.OrderEntity;
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.OrderDto;
-import com.restaurant.grandmasfood.model.ProductDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.restaurant.grandmasfood.mapper.impl.util.MyUtils;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
 @Component
 public class OrderEntityToDtoMapper implements Mapper<OrderEntity, OrderDto> {
-
-    private final ClientEntityToDtoMapper clientEntityToDtoMapper;
-
-    private final ProductEntityToDtoMapper productEntityToDtoMapper;
-
-    @Autowired
-    public OrderEntityToDtoMapper(ClientEntityToDtoMapper clientEntityToDtoMapper, ProductEntityToDtoMapper productEntityToDtoMapper) {
-        this.clientEntityToDtoMapper = clientEntityToDtoMapper;
-        this.productEntityToDtoMapper = productEntityToDtoMapper;
-
-    }
-
-
 
 
     @Override

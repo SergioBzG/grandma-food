@@ -63,4 +63,6 @@ public class ProductEntity {
     public int hashCode() {
         return Objects.hash(id, uuid, fantasyName, category, description, price, available, orderEntities);
     }
+
+
 }

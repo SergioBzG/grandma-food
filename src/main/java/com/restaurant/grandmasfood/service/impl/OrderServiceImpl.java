@@ -12,6 +12,7 @@ import com.restaurant.grandmasfood.repository.IOrderRepository;
 import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -67,6 +68,7 @@ public class OrderServiceImpl implements IOrderService {
             orderEntity.setGrandTotal(grandTotal);
 
         }
+
         OrderEntity savedOrderEntity = orderRepository.save(orderEntity);
         return orderMapper.mapToDto(savedOrderEntity);
     }

@@ -1,6 +1,7 @@
 package com.restaurant.grandmasfood.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,17 +32,17 @@ public class OrderEntity {
     @Column(unique = true)
     private UUID uuid;
 
-    @NotNull
     //@CreationTimestamp
+    @NotNull
     private LocalDateTime creationDateTime;
 
-
+    @Valid
     @ManyToOne(targetEntity = ClientEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_document")
     @NotNull(message = "a client is required")
     private ClientEntity clientEntity;
 
-
+    @Valid
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = ProductEntity.class)
     @JoinColumn(name = "product_uuid")
     @NotNull(message = "a product is required")
