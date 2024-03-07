@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @Data
-public class ProductDto {
+public class ProductDto implements Dto {
 
     private UUID uuid;
     private String fantasyName;
