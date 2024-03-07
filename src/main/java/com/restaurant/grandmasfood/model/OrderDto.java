@@ -9,7 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class OrderDto {
+public class OrderDto implements Dto {
 
     private UUID uuid;
     private LocalDateTime creationDateTime;

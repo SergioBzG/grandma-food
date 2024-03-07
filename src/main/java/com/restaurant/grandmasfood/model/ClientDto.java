@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @Data
-public class ClientDto {
+public class ClientDto implements Dto {
     private String document;
     private String name;
     private String email;
