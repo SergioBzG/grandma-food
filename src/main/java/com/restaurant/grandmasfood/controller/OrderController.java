@@ -1,24 +1,30 @@
 package com.restaurant.grandmasfood.controller;
 
 
+import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.model.OrderDto;
 import com.restaurant.grandmasfood.service.IOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.grandmasfood.service.impl.OrderServiceImpl;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
 
-    @Autowired
-    IOrderService orderService;
+
+    private final IOrderService orderService;
+
+    public OrderController(final OrderServiceImpl orderService){this.orderService = orderService;}
 
     @PostMapping
-    public String createOrder() {
-        return this.orderService.createOrder();
+    public ResponseEntity createOrder(@RequestBody OrderDto orderDto) throws AlreadyExistsException {
+        return new ResponseEntity<>(this.orderService.createOrder(orderDto), HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{uuid}/delivered/{timestamp}")

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,17 +32,17 @@ public class OrderEntity {
     private UUID uuid;
 
     @NotNull
-    @CreationTimestamp
-    private LocalDate creationDateTime;
+    //@CreationTimestamp
+    private LocalDateTime creationDateTime;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = ClientEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_document")
     @NotNull(message = "a client is required")
     private ClientEntity clientEntity;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = ProductEntity.class)
     @JoinColumn(name = "product_uuid")
     @NotNull(message = "a product is required")
     private ProductEntity productEntity;
@@ -63,11 +64,11 @@ public class OrderEntity {
     @NotNull(message = "a grand total is required")
     private Double grandTotal;
 
-    @Column(columnDefinition = "boolean default false")
+    //@Column(columnDefinition = "boolean default false")
     @NotNull
     private Boolean delivered;
 
-    private LocalDate deliveredDate;
+    private LocalDateTime deliveredDate;
 
     @Override
     public boolean equals(Object o) {
