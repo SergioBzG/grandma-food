@@ -15,4 +15,5 @@ public interface ExceptionCode {
     String ORDER_INVALID_ATTRIBUTE_FORMAT_CODE = "EO34";
     String CLIENT_NO_CHANGES_IN_UPDATE_CODE = "EC45";
     String PRODUCT_NO_CHANGES_IN_UPDATE_CODE = "EP45";
+    String FATAL_ERROR = "EFE00";
 }

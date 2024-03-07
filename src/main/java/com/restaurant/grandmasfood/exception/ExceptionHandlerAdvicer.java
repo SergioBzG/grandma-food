@@ -1,6 +1,8 @@
 package com.restaurant.grandmasfood.exception;
 
+import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,6 +67,17 @@ public class ExceptionHandlerAdvicer {
                 .exception(Arrays.toString(notFoundException.getStackTrace()))
                 .build();
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<ExceptionResponse> exceptionHandler(Exception exception) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .code(ExceptionCode.FATAL_ERROR)
+                .description(exception.getClass().getName())
+                .timestamp(LocalDateTime.now())
+                .exception(Arrays.toString(exception.getStackTrace()))
+                .build();
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 
