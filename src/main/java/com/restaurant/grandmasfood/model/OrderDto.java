@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -37,6 +36,6 @@ public class OrderDto {
     private Double tax;
     private Double grandTotal;
     private Boolean delivered;
-    private LocalDate deliveredDate;
+    private LocalDateTime deliveredDate;
 
 }
