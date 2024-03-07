@@ -1,8 +1,8 @@
 package com.restaurant.grandmasfood.validator;
 
-import com.restaurant.grandmasfood.model.Dto;
+import org.springframework.validation.BindingResult;
 
 public interface IValidator {
-    boolean checkMissingData(Dto dto);
-    boolean checkFormat(String pattern);
+    void checkMissingData(BindingResult errors);
+    void checkFormat(String pattern);
 }

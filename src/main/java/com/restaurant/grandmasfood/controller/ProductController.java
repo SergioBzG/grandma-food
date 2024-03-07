@@ -1,13 +1,15 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
-import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
+import com.restaurant.grandmasfood.validator.IValidator;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,28 +18,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/products")
 public class ProductController {
 
     private final IProductService productService;
-
-    public ProductController(final ProductServiceImpl productService) {
-        this.productService = productService;
-    }
+    private final IValidator productValidator;
 
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody ProductDto productDto) {
-        // TODO : check all fields are in request body
-        try {
-            return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
-        } catch (AlreadyExistsException e) {
-            return new ResponseEntity<>(
-                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
-                    HttpStatus.CONFLICT
-            );
-        }
+    public ResponseEntity<ProductDto> createProduct(@RequestBody @Validated ProductDto productDto, BindingResult errors) {
+        this.productValidator.checkMissingData(errors);
+        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
+
     }
 
     @GetMapping(path = "/{uuid}")
