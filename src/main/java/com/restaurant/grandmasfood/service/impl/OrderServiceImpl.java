@@ -4,18 +4,14 @@ import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.entity.OrderEntity;
 import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
-import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.model.OrderDto;
-import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IClientRepository;
 import com.restaurant.grandmasfood.repository.IOrderRepository;
 import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IOrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +27,6 @@ public class OrderServiceImpl implements IOrderService {
     private final Mapper<OrderEntity, OrderDto> orderMapper;
 
 
-
     @Autowired
     public OrderServiceImpl(IOrderRepository orderRepository, Mapper<OrderEntity, OrderDto> orderMapper, IClientRepository clientRepository, IProductRepository productRepository) {
         this.orderRepository = orderRepository;
@@ -45,7 +40,7 @@ public class OrderServiceImpl implements IOrderService {
         OrderEntity orderEntity = new OrderEntity();
         Double tax = 0.19;
 
-        Optional<ClientEntity> clientEntity  = clientRepository.findByDocumento(orderDto.getClientDocument());
+        Optional<ClientEntity> clientEntity = clientRepository.findByDocumento(orderDto.getClientDocument());
         Optional<ProductEntity> productEntity = productRepository.findByUuid(UUID.fromString(orderDto.getProductUuid()));
         if (productEntity.isEmpty() || clientEntity.isEmpty()) {
             System.out.println("Product or Client not Found");
@@ -76,5 +71,18 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public String deliverOrder() {
         return "Order delivered";
+    }
+
+    @Transactional
+    @Override
+    public boolean updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp) {
+        Optional<OrderEntity> orderOptional = (orderRepository.findByUuid(UUID.fromString(uuid)));
+        if (orderOptional.isEmpty()) {
+            System.out.println("ORDER NOT FOUND");
+        }
+        OrderEntity orderEntity = orderOptional.get();
+        orderEntity.setDelivered(true);
+        orderEntity.setDeliveredDate(timestamp);
+        return true;
     }
 }

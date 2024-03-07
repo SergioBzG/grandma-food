@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/orders")
@@ -25,23 +26,21 @@ public class OrderController {
         return new ResponseEntity<>(this.orderService.createOrder(orderDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping(path = "/{uuid}/delivered/{timestamp}")
+    @PatchMapping(path = "/{uuid}/{timestamp}")
     public ResponseEntity updateDeliveredOrder(
           @PathVariable("uuid") String uuid,
           @PathVariable("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp) {
         try{
-            boolean updated = orderService.updateOrderDeliveredStatus(uuid, timestamp);
+            String correctUUid = String.valueOf(UUID.fromString(uuid));
+            boolean updated = orderService.updateOrderDeliveredStatus(correctUUid, timestamp);
             if (updated){
-                return ResponseEntity.ok("ORder Delivered Update Succesfully");
+                return ResponseEntity.ok("Updated Successful");
             } else {
                 return ResponseEntity.notFound().build();
             }
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 
         }
-
     }
-
-
-
 }

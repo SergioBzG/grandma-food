@@ -10,4 +10,5 @@ public interface IOrderService {
 
     String deliverOrder();
 
+    boolean updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp);
 }
