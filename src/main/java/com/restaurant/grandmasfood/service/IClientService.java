@@ -3,6 +3,7 @@ package com.restaurant.grandmasfood.service;
 import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.model.ClientDto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IClientService {
@@ -13,4 +14,6 @@ public interface IClientService {
     void updateClient(String document, ClientEntity clientEntity);
 
     void deleteClient(String document);
+
+    List<ClientEntity> getClients(String orderBy, String direction);
 }

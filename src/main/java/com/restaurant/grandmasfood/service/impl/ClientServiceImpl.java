@@ -7,6 +7,7 @@ import com.restaurant.grandmasfood.repository.IClientRepository;
 import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,5 +56,30 @@ public class ClientServiceImpl implements IClientService {
     public void deleteClient(String document) {
         ClientEntity clientEntity = this.clientRepository.findByDocumento(document).get();
         clientRepository.delete(clientEntity);
+    }
+
+    public List<ClientEntity> getClients(String orderBy, String direction) {
+        if ("DOCUMENT".equalsIgnoreCase(orderBy)) {
+            if ("ASC".equalsIgnoreCase(direction)) {
+                return clientRepository.findAllByOrderByDocumentAsc();
+            } else {
+                return clientRepository.findAllByOrderByDocumentDesc();
+            }
+        } else if ("NAME".equalsIgnoreCase(orderBy)) {
+            if ("ASC".equalsIgnoreCase(direction)) {
+                return clientRepository.findAllByOrderByNameAsc();
+            } else {
+                return clientRepository.findAllByOrderByNameDesc();
+            }
+        } else if ("ADDRESS".equalsIgnoreCase(orderBy)) {
+            if ("ASC".equalsIgnoreCase(direction)) {
+                return clientRepository.findAllByOrderByDeliveryAddressAsc();
+            } else {
+                return clientRepository.findAllByOrderByDeliveryAddressDesc();
+            }
+        } else {
+            // Si no se proporciona un orderBy válido, se devuelve una lista sin ordenar
+            return clientRepository.findAll();
+        }
     }
 }

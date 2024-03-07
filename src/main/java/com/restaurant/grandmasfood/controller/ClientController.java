@@ -6,6 +6,7 @@ import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,5 +45,11 @@ public class ClientController {
     @DeleteMapping(path = "/{document}")
     public void deleteClient(@PathVariable("document") String document) {
         clientService.deleteClient(document);
+    }
+
+    @GetMapping
+    public List<ClientEntity> getClients(@RequestParam(defaultValue = "DOCUMENT") String orderBy,
+                                         @RequestParam(defaultValue = "ASC") String direction) {
+        return clientService.getClients(orderBy, direction);
     }
 }
