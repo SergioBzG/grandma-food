@@ -27,7 +27,12 @@ public class ProductServiceImpl implements IProductService {
     public ProductDto createProduct(ProductDto productDto) {
         boolean exists = this.existsByFantasyName(productDto.getFantasyName());
         if(exists)
-            throw new AlreadyExistsException(ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE, "Product", "fantasy name", productDto.getFantasyName());
+            throw new AlreadyExistsException(
+                    ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE,
+                    "Product",
+                    "fantasy name",
+                    productDto.getFantasyName().toUpperCase()
+            );
         productDto.setUuid(UUID.randomUUID());
         productDto.setFantasyName(productDto.getFantasyName().toUpperCase());
         ProductEntity productEntitySaved = this.productRepository.save(productMapper.mapFromDto(productDto));
