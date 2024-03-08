@@ -3,7 +3,7 @@ package com.restaurant.grandmasfood.exception;
 import lombok.Getter;
 
 @Getter
-public class AlreadyExistsException extends Exception {
+public class AlreadyExistsException extends RuntimeException {
     private final String code;
 
     public AlreadyExistsException(String code, String entityName, String attributeName, String attributeValue) {
