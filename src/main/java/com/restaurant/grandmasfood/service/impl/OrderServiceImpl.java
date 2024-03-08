@@ -69,8 +69,9 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public String deliverOrder() {
-        return "Order delivered";
+    public OrderDto getOrderByUuid(String uuid){
+        OrderEntity orderEntityOptional = this.orderRepository.findByUuid(UUID.fromString(uuid)).get();
+        return orderMapper.mapToDto(orderEntityOptional);
     }
 
     @Transactional
@@ -87,4 +88,5 @@ public class OrderServiceImpl implements IOrderService {
 
         return false;
     }
+
 }
