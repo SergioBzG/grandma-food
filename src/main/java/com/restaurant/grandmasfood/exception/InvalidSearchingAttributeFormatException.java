@@ -3,7 +3,7 @@ package com.restaurant.grandmasfood.exception;
 import lombok.Getter;
 
 @Getter
-public class InvalidSearchingAttributeFormatException extends Exception {
+public class InvalidSearchingAttributeFormatException extends RuntimeException {
     private final String code;
 
     public InvalidSearchingAttributeFormatException(String code, String entityName, String attributeName) {
