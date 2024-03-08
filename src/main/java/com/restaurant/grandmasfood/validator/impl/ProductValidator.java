@@ -2,6 +2,7 @@ package com.restaurant.grandmasfood.validator.impl;
 
 import com.restaurant.grandmasfood.entity.CategoryProduct;
 import com.restaurant.grandmasfood.exception.InvalidOrMissingDataException;
+import com.restaurant.grandmasfood.exception.InvalidSearchingAttributeFormatException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.validator.IValidator;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,8 @@ import java.util.Objects;
 
 @Component
 public class ProductValidator implements IValidator {
+
+    private static final String PATTERN = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
     @Override
     public void checkMissingData(BindingResult errors) {
         if(errors.hasErrors())
@@ -22,9 +25,15 @@ public class ProductValidator implements IValidator {
             );
     }
 
+    // TODO: update checkFormat so it can receive attribute name in oder to pass it to the Exception
     @Override
-    public void checkFormat(String pattern) {
-
+    public void checkFormat(String attribute) {
+        if(!attribute.matches(PATTERN))
+            throw new InvalidSearchingAttributeFormatException(
+                    ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
+                    "Product",
+                    attribute
+            );
     }
 
     public void checkCategory(String category) {

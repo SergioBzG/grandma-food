@@ -20,7 +20,7 @@ public class OrderValidator implements IValidator {
     }
 
     @Override
-    public void checkFormat(String pattern) {
+    public void checkFormat(String attribute) {
 
     }
 }

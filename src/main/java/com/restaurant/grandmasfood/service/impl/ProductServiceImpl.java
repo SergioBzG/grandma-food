@@ -2,6 +2,7 @@ package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.exception.NotFoundException;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
@@ -35,12 +36,15 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDto getProductByUuid(UUID uuid) throws ProductDoesNotExistException {
+    public ProductDto getProductByUuid(UUID uuid) {
         Optional<ProductEntity> productOptional = this.productRepository.findByUuid(uuid);
-        return productOptional.map(product -> this.productMapper.mapToDto(product)
-        ).orElseThrow( () -> new ProductDoesNotExistException(uuid));
+        return productOptional.map(this.productMapper::mapToDto)
+                .orElseThrow(() -> new NotFoundException(ExceptionCode.PRODUCT_NOT_FOUND_CODE,
+                        "Product",
+                        "UUID"
+                        )
+                );
     }
-
 
     @Override
     public String updateProduct() {
