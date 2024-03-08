@@ -3,7 +3,6 @@ package com.restaurant.grandmasfood.service.impl;
 import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.exception.NotFoundException;
-import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ProductDto;
@@ -38,7 +37,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductDto getProductByUuid(UUID uuid) {
         Optional<ProductEntity> productOptional = this.productRepository.findByUuid(uuid);
-        return productOptional.map(this.productMapper::mapToDto)
+        return productOptional
+                .map(this.productMapper::mapToDto)
                 .orElseThrow(() -> new NotFoundException(ExceptionCode.PRODUCT_NOT_FOUND_CODE,
                         "Product",
                         "UUID"
@@ -53,12 +53,12 @@ public class ProductServiceImpl implements IProductService {
 
     @Transactional
     @Override
-    public void deleteProduct(UUID uuid) throws ProductDoesNotExistException {
+    public void deleteProduct(UUID uuid) {
         Optional<ProductEntity> productOptional = this.productRepository.findByUuid(uuid);
-        if(productOptional.isEmpty())
-            throw new ProductDoesNotExistException(uuid);
-        ProductEntity productEntity =  productOptional.get();
-        productEntity.setAvailable(false);
+        productOptional.ifPresentOrElse(
+                productEntity -> productEntity.setAvailable(false),
+                () -> {throw new NotFoundException(ExceptionCode.PRODUCT_NOT_FOUND_CODE, "Product", "UUID");}
+        );
     }
 
     @Override

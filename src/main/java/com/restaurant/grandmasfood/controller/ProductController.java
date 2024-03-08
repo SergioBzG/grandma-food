@@ -1,7 +1,5 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
-import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
 import com.restaurant.grandmasfood.validator.impl.ProductValidator;
@@ -13,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,25 +41,16 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public ResponseEntity deleteProduct(@PathVariable String uuid){
-        try {
-            UUID correctUuid = UUID.fromString(uuid);
-            // TODO : check uuid format, response 400 if it is wrong
-            productService.deleteProduct(correctUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch(IllegalArgumentException e) {
-            return new ResponseEntity<>(
-                    new ExceptionResponse("P1343", LocalDateTime.now(), "Invalid uuid format", Arrays.toString(e.getStackTrace())),
-                    HttpStatus.BAD_REQUEST);
-        } catch (ProductDoesNotExistException e) {
-            return new ResponseEntity<>(
-                    new ExceptionResponse(e.getCode(), LocalDateTime.now(), e.getMessage(), Arrays.toString(e.getStackTrace())),
-                    HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> deleteProduct(@PathVariable String uuid){
+        this.productValidator.checkFormat(uuid);
+        productService.deleteProduct(UUID.fromString(uuid));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+
     }
 
     @GetMapping
-    public List<ProductDto> listProducts() {
-        return this.productService.findAll();
+    public ResponseEntity<List<ProductDto>> listProducts() {
+        return new ResponseEntity<>(this.productService.findAll(), HttpStatus.OK);
     }
 }
