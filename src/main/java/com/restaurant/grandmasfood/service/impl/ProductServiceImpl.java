@@ -9,31 +9,25 @@ import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IProductService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    IProductRepository productRepository;
-
-    Mapper<ProductEntity, ProductDto> productMapper;
-
-    public ProductServiceImpl(IProductRepository productRepository, Mapper<ProductEntity, ProductDto> productMapper) {
-        this.productMapper = productMapper;
-        this.productRepository = productRepository;
-
-    }
+    private final IProductRepository productRepository;
+    private final Mapper<ProductEntity, ProductDto> productMapper;
 
     @Override
-    public ProductDto createProduct(ProductDto productDto) throws AlreadyExistsException {
+    public ProductDto createProduct(ProductDto productDto) {
         boolean exists = this.existsByFantasyName(productDto.getFantasyName());
         if(exists)
             throw new AlreadyExistsException(ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE, "Product", "fantasy name", productDto.getFantasyName());
-
         productDto.setUuid(UUID.randomUUID());
         productDto.setFantasyName(productDto.getFantasyName().toUpperCase());
         ProductEntity productEntitySaved = this.productRepository.save(productMapper.mapFromDto(productDto));

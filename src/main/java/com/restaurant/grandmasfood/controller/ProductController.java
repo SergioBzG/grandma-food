@@ -4,7 +4,7 @@ import com.restaurant.grandmasfood.exception.utils.ExceptionResponse;
 import com.restaurant.grandmasfood.exception.ProductDoesNotExistException;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
-import com.restaurant.grandmasfood.validator.IValidator;
+import com.restaurant.grandmasfood.validator.impl.ProductValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +24,13 @@ import java.util.UUID;
 public class ProductController {
 
     private final IProductService productService;
-    private final IValidator productValidator;
+    private final ProductValidator productValidator;
 
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody @Validated ProductDto productDto, BindingResult errors) {
         this.productValidator.checkMissingData(errors);
+        this.productValidator.checkCategory(productDto.getCategory());
         return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
-
     }
 
     @GetMapping(path = "/{uuid}")

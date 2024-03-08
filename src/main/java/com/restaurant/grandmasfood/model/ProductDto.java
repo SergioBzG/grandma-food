@@ -1,6 +1,5 @@
 package com.restaurant.grandmasfood.model;
 
-import com.restaurant.grandmasfood.entity.CategoryProduct;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,7 +20,7 @@ public class ProductDto {
     private String fantasyName;
 
     @NotNull(message = "a product must have a category")
-    private CategoryProduct category;
+    private String category;
 
     @NotBlank(message = "a product must have a description")
     @Size(max = 511)
@@ -30,6 +29,7 @@ public class ProductDto {
     @NotNull(message = "a product must have a price")
     private Double price;
 
+    @NotNull(message = "a product must have a available state")
     private Boolean available;
 
 }
