@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository
 public interface IProductRepository extends JpaRepository<ProductEntity, Long> {
 
-    boolean existsByFantasyName(String fantasyName);
+    Optional<ProductEntity> findByFantasyName(String fantasyName);
     Optional<ProductEntity> findByUuid(UUID uuid);
 }

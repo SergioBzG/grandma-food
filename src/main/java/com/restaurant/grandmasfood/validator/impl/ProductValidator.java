@@ -46,4 +46,13 @@ public class ProductValidator implements IValidator {
                     "category"
             );
     }
+
+    public void checkNoUpdatedUuid(String uuidInUrl, String uuidInBody) {
+        if(!uuidInUrl.equals(uuidInBody))
+            throw new InvalidSearchingAttributeFormatException(
+                    ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
+                    "Product",
+                    "UUID"
+            );
+    }
 }

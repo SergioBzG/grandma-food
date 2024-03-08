@@ -2,6 +2,7 @@ package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.exception.NoChangesInUpdateException;
 import com.restaurant.grandmasfood.exception.NotFoundException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
@@ -25,8 +26,8 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        boolean exists = this.existsByFantasyName(productDto.getFantasyName());
-        if(exists)
+        Optional<ProductDto> optionalProductDto = this.findByFantasyName(productDto.getFantasyName());
+        if(optionalProductDto.isPresent())
             throw new AlreadyExistsException(
                     ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE,
                     "Product",
@@ -51,9 +52,32 @@ public class ProductServiceImpl implements IProductService {
                 );
     }
 
+//    @Transactional
     @Override
-    public String updateProduct() {
-        return "Product updated";
+    public void updateProduct(ProductDto productDto, UUID uuid) {
+        Optional<ProductEntity> savedOptionalProduct = this.productRepository.findByUuid(uuid);
+        ProductDto savedProductDto = savedOptionalProduct
+                .map(this.productMapper::mapToDto)
+                .orElseThrow(() -> new NotFoundException(ExceptionCode.PRODUCT_NOT_FOUND_CODE,
+                                "Product",
+                                "UUID"
+                        )
+                );
+        Optional<ProductDto> optionalProductDto = this.findByFantasyName(productDto.getFantasyName());
+        if(optionalProductDto.isPresent() && !optionalProductDto.get().equals(savedProductDto))
+            throw new AlreadyExistsException(
+                    ExceptionCode.PRODUCT_ALREADY_EXISTS_CODE,
+                    "Product",
+                    "fantasy name",
+                    productDto.getFantasyName().toUpperCase()
+            );
+        if(productDto.equals(savedProductDto))
+            throw new NoChangesInUpdateException(ExceptionCode.PRODUCT_NO_CHANGES_IN_UPDATE_CODE, "Product");
+
+        // Updated product
+        ProductEntity newProductEntity =  productMapper.mapFromDto(productDto);
+        newProductEntity.setId(savedOptionalProduct.get().getId());
+        this.productRepository.save(newProductEntity);
     }
 
     @Transactional
@@ -73,10 +97,9 @@ public class ProductServiceImpl implements IProductService {
                 .toList();
     }
 
-
-
     @Override
-    public boolean existsByFantasyName(String fantasyName) {
-        return this.productRepository.existsByFantasyName(fantasyName.toUpperCase());
+    public Optional<ProductDto> findByFantasyName(String fantasyName) {
+        return this.productRepository.findByFantasyName(fantasyName.toUpperCase())
+                .map(this.productMapper::mapToDto);
     }
 }

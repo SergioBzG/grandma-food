@@ -36,17 +36,19 @@ public class ProductController {
     }
 
     @PutMapping(path = "/{uuid}")
-    public String updateClient(@PathVariable("uuid") String uuid) {
-        return productService.updateProduct();
+    public ResponseEntity<?> updateClient(@PathVariable("uuid") String uuid, @RequestBody ProductDto productDto) {
+        this.productValidator.checkFormat(uuid);
+        this.productValidator.checkNoUpdatedUuid(uuid, productDto.getUuid().toString());
+        this.productValidator.checkCategory(productDto.getCategory());
+        productService.updateProduct(productDto, UUID.fromString(uuid));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String uuid){
+    public ResponseEntity<?> deleteProduct(@PathVariable String uuid) {
         this.productValidator.checkFormat(uuid);
         productService.deleteProduct(UUID.fromString(uuid));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-
     }
 
     @GetMapping
