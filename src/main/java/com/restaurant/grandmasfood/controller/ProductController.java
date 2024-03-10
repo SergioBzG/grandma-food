@@ -36,7 +36,8 @@ public class ProductController {
     }
 
     @PutMapping(path = "/{uuid}")
-    public ResponseEntity<?> updateClient(@PathVariable("uuid") String uuid, @RequestBody ProductDto productDto) {
+    public ResponseEntity<?> updateProduct(@PathVariable("uuid") String uuid, @RequestBody @Validated ProductDto productDto, BindingResult errors) {
+        this.productValidator.checkMissingData(errors);
         this.productValidator.checkFormat(uuid);
         this.productValidator.checkNoUpdatedUuid(uuid, productDto.getUuid().toString());
         this.productValidator.checkCategory(productDto.getCategory());
