@@ -55,4 +55,13 @@ public class ProductValidator implements IValidator {
                     "UUID"
             );
     }
+
+    public void checkQueryParamForProductFiltering(String query) {
+        if(query == null || query.trim().isEmpty())
+            throw new InvalidSearchingAttributeFormatException(
+                    ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
+                    "Product",
+                    "query param for filtering"
+            );
+    }
 }

@@ -11,6 +11,7 @@ import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,6 +94,16 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<ProductDto> findAll() {
         return this.productRepository.findAll().stream()
+                .map(this.productMapper::mapToDto)
+                .toList();
+    }
+
+    @Override
+    public List<ProductDto> filterAllByFantasyName(String query) {
+        return this.productRepository.filterAllByFantasyName(
+                Sort.by("fantasyName"),
+                query
+        ).stream()
                 .map(this.productMapper::mapToDto)
                 .toList();
     }
