@@ -10,7 +10,7 @@ public interface IClientService {
 
     ClientDto createClient(ClientDto clientDto);
 
-    void updateClient(String document, ClientEntity clientEntity);
+    void updateClient(String document, ClientDto clientDto);
 
     void deleteClient(String document);
 }

@@ -1,6 +1,8 @@
 package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.ClientEntity;
+import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.repository.IClientRepository;
@@ -30,6 +32,12 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto createClient(ClientDto clientDto) {
+
+        Optional<ClientDto> clientExist = getClient(clientDto.getDocument());
+
+        if (clientExist.isPresent()){
+            throw new AlreadyExistsException(ExceptionCode.CLIENT_ALREADY_EXISTS_CODE,"Client", "document",clientDto.getDocument());
+        }
         clientDto.setDocument(clientDto.getDocument());
         clientDto.setName(clientDto.getName());
         clientDto.setEmail(clientDto.getEmail());
@@ -42,12 +50,12 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
-    public void updateClient(String document, ClientEntity clientEntity){
+    public void updateClient(String document, ClientDto clientDto){
         ClientEntity updateClientEntity = clientRepository.findByDocumento(document).get();
-        updateClientEntity.setName(clientEntity.getName());
-        updateClientEntity.setEmail(clientEntity.getEmail());
-        updateClientEntity.setPhone(clientEntity.getPhone());
-        updateClientEntity.setDeliveryAddress(clientEntity.getDeliveryAddress());
+        updateClientEntity.setName(clientDto.getName());
+        updateClientEntity.setEmail(clientDto.getEmail());
+        updateClientEntity.setPhone(clientDto.getPhone());
+        updateClientEntity.setDeliveryAddress(clientDto.getDeliveryAddress());
         clientRepository.save(updateClientEntity);
     }
 
