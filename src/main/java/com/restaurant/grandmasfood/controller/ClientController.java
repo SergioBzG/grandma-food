@@ -2,7 +2,6 @@ package com.restaurant.grandmasfood.controller;
 
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.service.IClientService;
-import com.restaurant.grandmasfood.validator.IValidator;
 import com.restaurant.grandmasfood.validator.impl.ClientValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,19 +31,22 @@ public class ClientController {
     @GetMapping(path = "/{document}")
     public Optional<ClientDto> getClient(@PathVariable("document") String document){
         validator.checkFormat(document);
-        return clientService.getClient(document);
+        return new ResponseEntity<>(clientService.getClient(document), HttpStatus.OK).getBody();
     }
 
     @PutMapping(path = "/{document}")
-    public void updateClient(@PathVariable("document") String document, @RequestBody @Validated ClientDto clientDto, BindingResult errors) {
+    public ResponseEntity<?> updateClient(@PathVariable("document") String document, @RequestBody @Validated ClientDto clientDto, BindingResult errors) {
         validator.checkFormat(document);
         validator.checkNoUpdatedDocument(document,clientDto.getDocument());
         validator.checkMissingData(errors);
         clientService.updateClient(document, clientDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{document}")
-    public void deleteClient(@PathVariable("document") String document) {
+    public ResponseEntity<?> deleteClient(@PathVariable("document") String document, @Validated ClientDto clientDto,BindingResult errors) {
+        validator.checkFormat(document);
         clientService.deleteClient(document);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

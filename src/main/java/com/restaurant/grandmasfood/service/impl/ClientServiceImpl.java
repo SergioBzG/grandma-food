@@ -74,7 +74,14 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void deleteClient(String document) {
-        ClientEntity clientEntity = this.clientRepository.findByDocumento(document).get();
-        clientRepository.delete(clientEntity);
+        Optional<ClientEntity> deleteClientEntityOptional = clientRepository.findByDocumento(document);
+
+        if (deleteClientEntityOptional.isPresent()) {
+            ClientEntity deleteClientEntity = deleteClientEntityOptional.get();
+            ClientDto deleteClientDto = clientMapper.mapToDto(deleteClientEntity);
+            clientRepository.delete(deleteClientEntity);
+        } else {
+            throw new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document");
+        }
     }
 }
