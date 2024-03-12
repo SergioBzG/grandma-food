@@ -2,7 +2,6 @@ package com.restaurant.grandmasfood.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -49,7 +48,6 @@ public class OrderEntity {
     private Integer quantity;
 
     @NotNull
-    @NotBlank(message = "extra information is required")
     @Size(max = 511)
     private String extraInformation;
 

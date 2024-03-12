@@ -1,46 +1,42 @@
 package com.restaurant.grandmasfood.controller;
 
-
-import com.restaurant.grandmasfood.exception.AlreadyExistsException;
 import com.restaurant.grandmasfood.model.OrderDto;
 import com.restaurant.grandmasfood.service.IOrderService;
-import com.restaurant.grandmasfood.service.impl.OrderServiceImpl;
+import com.restaurant.grandmasfood.validator.impl.ClientValidator;
+import com.restaurant.grandmasfood.validator.impl.OrderValidator;
+import com.restaurant.grandmasfood.validator.impl.ProductValidator;
+import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
 
-
     private final IOrderService orderService;
-
-    public OrderController(final OrderServiceImpl orderService){this.orderService = orderService;}
+    private final OrderValidator orderValidator;
+    private final ClientValidator clientValidator;
+    private final ProductValidator productValidator;
 
     @PostMapping
-    public ResponseEntity createOrder(@RequestBody OrderDto orderDto) throws AlreadyExistsException {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Validated OrderDto orderDto, BindingResult errors){
+        // TODO : check uuid and document format
+        this.orderValidator.checkMissingData(errors);
         return new ResponseEntity<>(this.orderService.createOrder(orderDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping(path = "/{uuid}/{timestamp}")
-    public ResponseEntity updateDeliveredOrder(
+    @PatchMapping(path = "/{uuid}/delivered/{timestamp}")
+    public ResponseEntity<OrderDto> updateDeliveredOrder(
           @PathVariable("uuid") String uuid,
           @PathVariable("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp) {
-        try{
-            String correctUUid = String.valueOf(UUID.fromString(uuid));
-            boolean updated = orderService.updateOrderDeliveredStatus(correctUUid, timestamp);
-            if (updated){
-                return ResponseEntity.ok("Updated Successful");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-
-        }
+        this.orderValidator.checkFormat(uuid);
+        OrderDto updatedorderDto = orderService.updateOrderDeliveredStatus(uuid, timestamp);
+        return new ResponseEntity<>(updatedorderDto, HttpStatus.OK);
     }
 }
