@@ -61,7 +61,6 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>>  filterProductByFantasyName(
             @RequestParam(required = false) String q
     ) {
-        System.out.println("Q :" + q);
         this.productValidator.checkQueryParamForProductFiltering(q);
         return new ResponseEntity<>(this.productService.filterAllByFantasyName(q), HttpStatus.OK);
     }
