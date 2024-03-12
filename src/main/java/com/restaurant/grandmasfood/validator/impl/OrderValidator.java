@@ -23,12 +23,12 @@ public class OrderValidator implements IValidator {
     }
 
     @Override
-    public void checkFormat(String pattern) {
-        if(!pattern.matches(PATTERN))
+    public void checkFormat(String attribute) {
+        if(!attribute.matches(PATTERN))
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.ORDER_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Order",
-                    pattern
+                    attribute
             );
     }
 }
