@@ -13,4 +13,5 @@ public interface IProductService {
     void deleteProduct(UUID uuid);
     List<ProductDto> findAll();
     Optional<ProductDto> findByFantasyName(String fantasyName);
+    List<ProductDto> filterAllByFantasyName(String query);
 }
