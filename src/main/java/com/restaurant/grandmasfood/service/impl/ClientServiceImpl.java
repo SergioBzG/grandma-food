@@ -2,6 +2,8 @@ package com.restaurant.grandmasfood.service.impl;
 
 import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.exception.AlreadyExistsException;
+import com.restaurant.grandmasfood.exception.NoChangesInUpdateException;
+import com.restaurant.grandmasfood.exception.NotFoundException;
 import com.restaurant.grandmasfood.exception.utils.ExceptionCode;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
@@ -51,12 +53,23 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void updateClient(String document, ClientDto clientDto){
-        ClientEntity updateClientEntity = clientRepository.findByDocumento(document).get();
-        updateClientEntity.setName(clientDto.getName());
-        updateClientEntity.setEmail(clientDto.getEmail());
-        updateClientEntity.setPhone(clientDto.getPhone());
-        updateClientEntity.setDeliveryAddress(clientDto.getDeliveryAddress());
-        clientRepository.save(updateClientEntity);
+
+        Optional<ClientEntity> updateClientEntity = clientRepository.findByDocumento(document);
+
+        ClientDto updateClientDto = updateClientEntity.map(
+                this.clientMapper::mapToDto
+        ).orElseThrow(() -> new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document"));
+
+
+
+        if (updateClientDto.equals(clientDto)){
+            throw new NoChangesInUpdateException(ExceptionCode.CLIENT_NO_CHANGES_IN_UPDATE_CODE, "Client");
+        }
+
+
+        ClientEntity clientEntity = this.clientMapper.mapFromDto(clientDto);
+        clientEntity.setId(updateClientEntity.get().getId());
+        clientRepository.save(clientEntity);
     }
 
     @Override

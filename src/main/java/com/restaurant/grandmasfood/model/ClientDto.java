@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
@@ -37,4 +39,17 @@ public class ClientDto {
     @NotBlank(message = "a delivery address is required")
     @Size(max = 500)
     private String deliveryAddress;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientDto clientDto = (ClientDto) o;
+        return Objects.equals(document, clientDto.document) && Objects.equals(name, clientDto.name) && Objects.equals(email, clientDto.email) && Objects.equals(phone, clientDto.phone) && Objects.equals(deliveryAddress, clientDto.deliveryAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(document, name, email, phone, deliveryAddress);
+    }
 }
