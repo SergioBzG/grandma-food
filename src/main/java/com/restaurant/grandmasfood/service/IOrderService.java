@@ -6,9 +6,5 @@ import java.time.LocalDateTime;
 
 public interface IOrderService {
     OrderDto createOrder(OrderDto orderDto) throws AlreadyExistsException;
-
-    boolean updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp);
-
-    OrderDto getOrderByUuid(String uuid);
-
+    OrderDto updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp);
 }
