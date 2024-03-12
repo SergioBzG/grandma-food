@@ -1,33 +1,43 @@
 package com.restaurant.grandmasfood.controller;
 
-
+import com.restaurant.grandmasfood.model.OrderDto;
 import com.restaurant.grandmasfood.service.IOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.grandmasfood.validator.impl.ClientValidator;
+import com.restaurant.grandmasfood.validator.impl.OrderValidator;
+import com.restaurant.grandmasfood.validator.impl.ProductValidator;
+import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 
-import java.time.LocalDate;
-import java.util.Date;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
 
-    @Autowired
-    IOrderService orderService;
+    private final IOrderService orderService;
+    private final OrderValidator orderValidator;
+    private final ClientValidator clientValidator;
+    private final ProductValidator productValidator;
 
     @PostMapping
-    public String createOrder() {
-        return this.orderService.createOrder();
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Validated OrderDto orderDto, BindingResult errors){
+        this.clientValidator.checkFormat(orderDto.getClientDocument());
+        this.productValidator.checkFormat(orderDto.getProductUuid());
+        this.orderValidator.checkMissingData(errors);
+        return new ResponseEntity<>(this.orderService.createOrder(orderDto), HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{uuid}/delivered/{timestamp}")
-    public String updateDeliveredOrder(
+    public ResponseEntity<OrderDto> updateDeliveredOrder(
           @PathVariable("uuid") String uuid,
-          @PathVariable("timestamp") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate timestamp
-    ) {
-        return this.orderService.deliverOrder();
+          @PathVariable("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp) {
+        this.orderValidator.checkFormat(uuid);
+        OrderDto updatedorderDto = orderService.updateOrderDeliveredStatus(uuid, timestamp);
+        return new ResponseEntity<>(updatedorderDto, HttpStatus.OK);
     }
-
-
 }

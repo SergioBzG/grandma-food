@@ -1,18 +1,17 @@
 package com.restaurant.grandmasfood.service;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.model.ProductDto;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface IProductService {
-    String createProduct();
-
-    String getProduct();
-
-    String updateProduct();
-
-    String deleteProduct();
-
+    ProductDto createProduct(ProductDto productDto);
+    ProductDto getProductByUuid(UUID uuid);
+    void updateProduct(ProductDto productDto, UUID uuid);
+    void deleteProduct(UUID uuid);
     List<ProductDto> findAll();
+    Optional<ProductDto> findByFantasyName(String fantasyName);
+    List<ProductDto> filterAllByFantasyName(String query);
 }

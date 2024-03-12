@@ -1,11 +1,14 @@
 package com.restaurant.grandmasfood.service;
 
+import com.restaurant.grandmasfood.model.ClientDto;
+
+
 public interface IClientService {
-    String getClient();
+    ClientDto getClient(String document);
 
-    String createClient();
+    ClientDto createClient(ClientDto clientDto);
 
-    String updateClient();
+    void updateClient(String document, ClientDto clientDto);
 
-    String deleteClient();
+    void deleteClient(String document);
 }

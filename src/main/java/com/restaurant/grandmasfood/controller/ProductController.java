@@ -1,45 +1,67 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
-import com.restaurant.grandmasfood.service.impl.ProductServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.grandmasfood.validator.impl.ProductValidator;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
+import java.util.List;
+import java.util.UUID;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/products")
 public class ProductController {
 
-    @Autowired
-    ProductServiceImpl productService;
+    private final IProductService productService;
+    private final ProductValidator productValidator;
 
     @PostMapping
-    public String createProduct() {
-        return this.productService.createProduct();
+    public ResponseEntity<ProductDto> createProduct(@RequestBody @Validated ProductDto productDto, BindingResult errors) {
+        this.productValidator.checkMissingData(errors);
+        this.productValidator.checkCategory(productDto.getCategory());
+        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public List<ProductDto> listProducts() {
-
-        return this.productService.findAll();
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity<ProductDto> getProduct(@PathVariable String uuid){
+        this.productValidator.checkFormat(uuid);
+        return new ResponseEntity<>(productService.getProductByUuid(UUID.fromString(uuid)), HttpStatus.OK);
     }
-
 
     @PutMapping(path = "/{uuid}")
-    public String updateClient(@PathVariable("uuid") String uuid) {
-        return productService.updateProduct();
+    public ResponseEntity<?> updateProduct(@PathVariable("uuid") String uuid, @RequestBody @Validated ProductDto productDto, BindingResult errors) {
+        this.productValidator.checkMissingData(errors);
+        this.productValidator.checkFormat(uuid);
+        this.productValidator.checkNoUpdatedUuid(uuid, productDto.getUuid().toString());
+        this.productValidator.checkCategory(productDto.getCategory());
+        productService.updateProduct(productDto, UUID.fromString(uuid));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public String deleteClient(@PathVariable("uuid") String uuid) {
-        return productService.deleteProduct();
+    public ResponseEntity<?> deleteProduct(@PathVariable String uuid) {
+        this.productValidator.checkFormat(uuid);
+        productService.deleteProduct(UUID.fromString(uuid));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(path = "/{id}")
-    public ProductDto getProduct(@PathVariable Long id){
-        return productService.getById(id);
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> listProducts() {
+        return new ResponseEntity<>(this.productService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<ProductDto>>  filterProductByFantasyName(
+            @RequestParam(required = false) String q
+    ) {
+        this.productValidator.checkQueryParamForProductFiltering(q);
+        return new ResponseEntity<>(this.productService.filterAllByFantasyName(q), HttpStatus.OK);
     }
 }
