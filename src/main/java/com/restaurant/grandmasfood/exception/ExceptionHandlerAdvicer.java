@@ -66,7 +66,7 @@ public class ExceptionHandlerAdvicer {
                 .timestamp(LocalDateTime.now())
                 .exception(Arrays.toString(notFoundException.getStackTrace()))
                 .build();
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({Exception.class})

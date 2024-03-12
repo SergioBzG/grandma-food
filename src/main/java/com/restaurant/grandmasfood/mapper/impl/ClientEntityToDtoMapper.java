@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClientEntityToDtoMapper implements Mapper<ClientEntity, ClientDto> {
-
-
     @Override
     public ClientDto mapToDto(ClientEntity clientEntity) {
         return ClientDto.builder()
@@ -20,7 +18,6 @@ public class ClientEntityToDtoMapper implements Mapper<ClientEntity, ClientDto> 
                 .deliveryAddress(clientEntity.getDeliveryAddress())
                 .build();
     }
-
     @Override
     public ClientEntity mapFromDto(ClientDto clientDto) {
         return ClientEntity.builder()
