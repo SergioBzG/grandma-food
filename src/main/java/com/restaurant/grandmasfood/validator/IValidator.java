@@ -4,5 +4,5 @@ import org.springframework.validation.BindingResult;
 
 public interface IValidator {
     void checkMissingData(BindingResult errors);
-    void checkFormat(String pattern);
+    void checkFormat(String attribute);
 }

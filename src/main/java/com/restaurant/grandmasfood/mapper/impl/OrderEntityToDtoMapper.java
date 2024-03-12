@@ -5,14 +5,13 @@ import com.restaurant.grandmasfood.entity.OrderEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.OrderDto;
 import org.springframework.stereotype.Component;
-import com.restaurant.grandmasfood.mapper.impl.util.MyUtils;
+import com.restaurant.grandmasfood.mapper.utils.Formatters;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
 @Component
 public class OrderEntityToDtoMapper implements Mapper<OrderEntity, OrderDto> {
-
 
     @Override
     public OrderDto mapToDto(OrderEntity orderEntity) {
@@ -24,9 +23,9 @@ public class OrderEntityToDtoMapper implements Mapper<OrderEntity, OrderDto> {
                 .productUuid(String.valueOf(orderEntity.getProductEntity().getUuid()))
                 .quantity(orderEntity.getQuantity())
                 .extraInformation(orderEntity.getExtraInformation())
-                .subTotal(MyUtils.decimalFormat(orderEntity.getSubTotal()))
-                .tax(MyUtils.decimalFormat(orderEntity.getTax()))
-                .grandTotal(MyUtils.decimalFormat(orderEntity.getGrandTotal()))
+                .subTotal(Formatters.decimalFormat(orderEntity.getSubTotal()))
+                .tax(Formatters.decimalFormat(orderEntity.getTax()))
+                .grandTotal(Formatters.decimalFormat(orderEntity.getGrandTotal()))
                 .delivered(orderEntity.getDelivered())
                 .deliveredDate(orderEntity.getDeliveredDate())
                 .build();
