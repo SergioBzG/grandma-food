@@ -43,7 +43,6 @@ public class ProductEntity {
     @NotNull
     private Double price;
 
-    @Column(columnDefinition =  "boolean default true")
     @NotNull
     private Boolean available;
 
