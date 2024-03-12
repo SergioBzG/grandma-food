@@ -12,7 +12,7 @@ import java.util.Objects;
 @Primary
 @Component
 public class ClientValidator implements IValidator {
-    private final String PATTERN = "CC-\\d{6}";
+    private static final String PATTERN = "CC-\\d{6}";
     @Override
     public void checkMissingData(BindingResult errors) {
         if (errors.hasErrors()){
@@ -24,10 +24,10 @@ public class ClientValidator implements IValidator {
         }
     }
     @Override
-    public void checkFormat(String pattern) {
-        if (!pattern.matches(PATTERN))
+    public void checkFormat(String attribute) {
+        if (!attribute.matches(PATTERN))
             throw new InvalidOrMissingDataException(ExceptionCode.CLIENT_INVALID_OR_MISSING_DATA_CODE,
-                    "Client",pattern);
+                    "Client",attribute);
 
     }
 
