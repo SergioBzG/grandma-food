@@ -25,13 +25,13 @@ public class ProductValidator implements IValidator {
             );
     }
 
-    // TODO: update checkFormat so it can receive attribute name in oder to pass it to the Exception
     @Override
     public void checkFormat(String attribute) {
         if(!attribute.matches(PATTERN))
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Product",
+                    "UUID",
                     attribute
             );
     }
@@ -52,7 +52,8 @@ public class ProductValidator implements IValidator {
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Product",
-                    "UUID"
+                    "UUID",
+                    uuidInBody
             );
     }
 
@@ -61,7 +62,8 @@ public class ProductValidator implements IValidator {
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.PRODUCT_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Product",
-                    "query param for filtering"
+                    "query param for filtering",
+                    query
             );
     }
 }

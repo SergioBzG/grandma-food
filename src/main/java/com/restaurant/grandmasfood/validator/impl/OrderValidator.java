@@ -28,6 +28,7 @@ public class OrderValidator implements IValidator {
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.ORDER_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Order",
+                    "UUID",
                     attribute
             );
     }

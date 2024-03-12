@@ -36,7 +36,8 @@ public class ClientValidator implements IValidator {
             throw new InvalidSearchingAttributeFormatException(
                     ExceptionCode.CLIENT_INVALID_ATTRIBUTE_FORMAT_CODE,
                     "Client",
-                    "document"
+                    "document",
+                    documentBody
             );
     }
 

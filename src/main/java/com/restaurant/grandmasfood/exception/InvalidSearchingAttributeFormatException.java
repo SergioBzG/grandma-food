@@ -6,8 +6,8 @@ import lombok.Getter;
 public class InvalidSearchingAttributeFormatException extends RuntimeException {
     private final String code;
 
-    public InvalidSearchingAttributeFormatException(String code, String entityName, String attributeName) {
-        super(entityName + " " + attributeName + " no valid");
+    public InvalidSearchingAttributeFormatException(String code, String entityName, String attributeName, String attributeValue) {
+        super(entityName + " " + attributeValue + " " + attributeName + " no valid");
         this.code = code;
     }
 }

@@ -26,7 +26,8 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody @Validated OrderDto orderDto, BindingResult errors){
-        // TODO : check uuid and document format
+        this.clientValidator.checkFormat(orderDto.getClientDocument());
+        this.productValidator.checkFormat(orderDto.getProductUuid());
         this.orderValidator.checkMissingData(errors);
         return new ResponseEntity<>(this.orderService.createOrder(orderDto), HttpStatus.CREATED);
     }
