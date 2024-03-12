@@ -7,13 +7,11 @@ import com.restaurant.grandmasfood.validator.IValidator;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-
 import java.util.Objects;
 
 @Primary
 @Component
 public class ClientValidator implements IValidator {
-
     private final String PATTERN = "CC-\\d{6}";
     @Override
     public void checkMissingData(BindingResult errors) {
@@ -25,8 +23,6 @@ public class ClientValidator implements IValidator {
             );
         }
     }
-
-
     @Override
     public void checkFormat(String pattern) {
         if (!pattern.matches(PATTERN))

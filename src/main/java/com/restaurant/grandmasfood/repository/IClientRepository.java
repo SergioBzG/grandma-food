@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface IClientRepository extends JpaRepository<ClientEntity,Long> {
-    @Query("SELECT c FROM ClientEntity c WHERE c.document = :documento")
-    Optional<ClientEntity> findByDocumento(String documento);
+    @Query("SELECT c FROM ClientEntity c WHERE c.document = :document")
+    Optional<ClientEntity> findByDocumento(String document);
 }

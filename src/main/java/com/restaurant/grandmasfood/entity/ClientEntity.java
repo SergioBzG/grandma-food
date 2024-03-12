@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -56,9 +55,11 @@ public class ClientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientEntity that = (ClientEntity) o;
-        return Objects.equals(Id, that.Id) && Objects.equals(document, that.document) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(deliveryAddress, that.deliveryAddress) && Objects.equals(orderEntities, that.orderEntities);
+        return Objects.equals(Id, that.Id) && Objects.equals(document, that.document)
+                && Objects.equals(name, that.name) && Objects.equals(email, that.email)
+                && Objects.equals(phone, that.phone) && Objects.equals(deliveryAddress,
+                that.deliveryAddress) && Objects.equals(orderEntities, that.orderEntities);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(Id, document, name, email, phone, deliveryAddress, orderEntities);
