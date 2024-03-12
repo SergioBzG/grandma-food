@@ -1,10 +1,12 @@
 package com.restaurant.grandmasfood.service.impl;
 
+import com.restaurant.grandmasfood.controller.utils.FieldForClientFiltering;
 import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.mapper.Mapper;
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.repository.IClientRepository;
 import com.restaurant.grandmasfood.service.IClientService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,28 +60,24 @@ public class ClientServiceImpl implements IClientService {
         clientRepository.delete(clientEntity);
     }
 
-    public List<ClientEntity> getClients(String orderBy, String direction) {
-        if ("DOCUMENT".equalsIgnoreCase(orderBy)) {
-            if ("ASC".equalsIgnoreCase(direction)) {
-                return clientRepository.findAllByOrderByDocumentAsc();
-            } else {
-                return clientRepository.findAllByOrderByDocumentDesc();
-            }
-        } else if ("NAME".equalsIgnoreCase(orderBy)) {
-            if ("ASC".equalsIgnoreCase(direction)) {
-                return clientRepository.findAllByOrderByNameAsc();
-            } else {
-                return clientRepository.findAllByOrderByNameDesc();
-            }
-        } else if ("ADDRESS".equalsIgnoreCase(orderBy)) {
-            if ("ASC".equalsIgnoreCase(direction)) {
-                return clientRepository.findAllByOrderByDeliveryAddressAsc();
-            } else {
-                return clientRepository.findAllByOrderByDeliveryAddressDesc();
-            }
-        } else {
-            // Si no se proporciona un orderBy válido, se devuelve una lista sin ordenar
-            return clientRepository.findAll();
-        }
+    @Override
+    public List<ClientDto> getOrderedClients(String orderBy, String direction) {
+        if(!FieldForClientFiltering.FIELDS_FOR_CLIENT_FILTERING.containsKey(orderBy))
+            return clientRepository.findAll().stream()
+                    .map(this.clientMapper::mapToDto)
+                    .toList();
+
+        if(direction.equals("ASC"))
+            return this.clientRepository.findAll(Sort.by(
+                    Sort.Direction.ASC, FieldForClientFiltering.FIELDS_FOR_CLIENT_FILTERING.get(orderBy))
+                    ).stream()
+                    .map(this.clientMapper::mapToDto)
+                    .toList();
+        return this.clientRepository.findAll(Sort.by(
+                Sort.Direction.DESC, FieldForClientFiltering.FIELDS_FOR_CLIENT_FILTERING.get(orderBy))
+                ).stream()
+                .map(this.clientMapper::mapToDto)
+                .toList();
+
     }
 }

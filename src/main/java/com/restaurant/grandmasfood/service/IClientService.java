@@ -15,5 +15,5 @@ public interface IClientService {
 
     void deleteClient(String document);
 
-    List<ClientEntity> getClients(String orderBy, String direction);
+    List<ClientDto> getOrderedClients(String orderBy, String direction);
 }

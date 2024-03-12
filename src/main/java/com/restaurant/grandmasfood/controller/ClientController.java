@@ -4,6 +4,7 @@ import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.service.IClientService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,8 +49,8 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<ClientEntity> getClients(@RequestParam(defaultValue = "DOCUMENT") String orderBy,
-                                         @RequestParam(defaultValue = "ASC") String direction) {
-        return clientService.getClients(orderBy, direction);
+    public ResponseEntity<List<ClientDto>> getClients(@RequestParam(defaultValue = "DOCUMENT") String orderBy,
+                                     @RequestParam(defaultValue = "ASC") String direction) {
+        return new ResponseEntity<>(this.clientService.getOrderedClients(orderBy, direction), HttpStatus.OK);
     }
 }
