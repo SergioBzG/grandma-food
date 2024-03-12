@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -23,28 +22,27 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientDto> createClient(@RequestBody @Validated ClientDto clientDto,
                                                   BindingResult errors) {
-            validator.checkMissingData(errors);
+        validator.checkMissingData(errors);
         return new ResponseEntity<>(clientService.createClient(clientDto), HttpStatus.CREATED);
     }
     @GetMapping(path = "/{document}")
-    public Optional<ClientDto> getClient(@PathVariable("document") String document){
-            validator.checkFormat(document);
-        return new ResponseEntity<>(clientService.getClient(document), HttpStatus.OK).getBody();
+    public ResponseEntity<ClientDto> getClient(@PathVariable("document") String document){
+        validator.checkFormat(document);
+        return new ResponseEntity<>(clientService.getClient(document), HttpStatus.OK);
     }
     @PutMapping(path = "/{document}")
     public ResponseEntity<?> updateClient(@PathVariable("document") String document,
                                           @RequestBody @Validated ClientDto clientDto, BindingResult errors) {
-            validator.checkFormat(document);
-            validator.checkNoUpdatedDocument(document,clientDto.getDocument());
-            validator.checkMissingData(errors);
-            clientService.updateClient(document, clientDto);
+        validator.checkFormat(document);
+        validator.checkNoUpdatedDocument(document,clientDto.getDocument());
+        validator.checkMissingData(errors);
+        clientService.updateClient(document, clientDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @DeleteMapping(path = "/{document}")
-    public ResponseEntity<?> deleteClient(@PathVariable("document") String document,
-                                          @Validated ClientDto clientDto,BindingResult errors) {
-            validator.checkFormat(document);
-            clientService.deleteClient(document);
+    public ResponseEntity<?> deleteClient(@PathVariable("document") String document) {
+        validator.checkFormat(document);
+        clientService.deleteClient(document);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

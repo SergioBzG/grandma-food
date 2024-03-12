@@ -23,13 +23,11 @@ public class ClientServiceImpl implements IClientService {
         this.clientMapper = clientMapper;
     }
     @Override
-    public Optional<ClientDto>getClient(String document){
+    public ClientDto getClient(String document){
         Optional<ClientEntity> getClientEntity = clientRepository.findByDocumento(document);
-            ClientDto getClientDto = getClientEntity.map(
+        return getClientEntity.map(
                     this.clientMapper::mapToDto
             ).orElseThrow(() -> new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document"));
-        Optional<ClientEntity> dtoClient = this.clientRepository.findByDocumento(document);
-        return dtoClient.map(client -> this.clientMapper.mapToDto(client));
     }
     @Override
     public ClientDto createClient(ClientDto clientDto) {
@@ -45,14 +43,14 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public void updateClient(String document, ClientDto clientDto){
         Optional<ClientEntity> updateClientEntity = clientRepository.findByDocumento(document);
-            ClientDto updateClientDto = updateClientEntity.map(
+        ClientDto updateClientDto = updateClientEntity.map(
                 this.clientMapper::mapToDto
             ).orElseThrow(() -> new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document"));
         if (updateClientDto.equals(clientDto)){
             throw new NoChangesInUpdateException(ExceptionCode.CLIENT_NO_CHANGES_IN_UPDATE_CODE, "Client");
         }
-            ClientEntity clientEntity = this.clientMapper.mapFromDto(clientDto);
-            clientEntity.setId(updateClientEntity.get().getId());
+        ClientEntity clientEntity = this.clientMapper.mapFromDto(clientDto);
+        clientEntity.setId(updateClientEntity.get().getId());
         clientRepository.save(clientEntity);
     }
     @Override
@@ -60,7 +58,6 @@ public class ClientServiceImpl implements IClientService {
         Optional<ClientEntity> deleteClientEntityOptional = clientRepository.findByDocumento(document);
         if (deleteClientEntityOptional.isPresent()) {
             ClientEntity deleteClientEntity = deleteClientEntityOptional.get();
-            ClientDto deleteClientDto = clientMapper.mapToDto(deleteClientEntity);
             clientRepository.delete(deleteClientEntity);
         } else {
             throw new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document");
