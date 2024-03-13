@@ -28,14 +28,14 @@ public class ClientServiceImpl implements IClientService {
     }
     @Override
     public ClientDto getClient(String document){
-        Optional<ClientEntity> getClientEntity = clientRepository.findByDocumento(document);
+        Optional<ClientEntity> getClientEntity = clientRepository.findByDocument(document);
         return getClientEntity.map(
                 this.clientMapper::mapToDto
         ).orElseThrow(() -> new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document"));
     }
     @Override
     public ClientDto createClient(ClientDto clientDto) {
-        Optional<ClientEntity> existingClient = clientRepository.findByDocumento(clientDto.getDocument());
+        Optional<ClientEntity> existingClient = clientRepository.findByDocument(clientDto.getDocument());
         if (existingClient.isPresent()){
             throw new AlreadyExistsException(ExceptionCode.CLIENT_ALREADY_EXISTS_CODE,"Client", "document",clientDto.getDocument());
         }
@@ -46,7 +46,7 @@ public class ClientServiceImpl implements IClientService {
     }
     @Override
     public void updateClient(String document, ClientDto clientDto){
-        Optional<ClientEntity> updateClientEntity = clientRepository.findByDocumento(document);
+        Optional<ClientEntity> updateClientEntity = clientRepository.findByDocument(document);
         ClientDto updateClientDto = updateClientEntity.map(
                 this.clientMapper::mapToDto
         ).orElseThrow(() -> new NotFoundException(ExceptionCode.CLIENT_NOT_FOUND_CODE, "Client", "document"));
@@ -59,7 +59,7 @@ public class ClientServiceImpl implements IClientService {
     }
     @Override
     public void deleteClient(String document) {
-        Optional<ClientEntity> deleteClientEntityOptional = clientRepository.findByDocumento(document);
+        Optional<ClientEntity> deleteClientEntityOptional = clientRepository.findByDocument(document);
         if (deleteClientEntityOptional.isPresent()) {
             ClientEntity deleteClientEntity = deleteClientEntityOptional.get();
             clientRepository.delete(deleteClientEntity);

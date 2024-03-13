@@ -40,7 +40,7 @@ public class OrderServiceImpl implements IOrderService {
     public OrderDto createOrder(OrderDto orderDto) {
         final Double TAX = 0.19;
 
-        ClientEntity clientEntity = clientRepository.findByDocumento(orderDto.getClientDocument())
+        ClientEntity clientEntity = clientRepository.findByDocument(orderDto.getClientDocument())
                 .orElseThrow(() -> new NotFoundException(
                         ExceptionCode.CLIENT_NOT_FOUND_CODE,
                         "Client",

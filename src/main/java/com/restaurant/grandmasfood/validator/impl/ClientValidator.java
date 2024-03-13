@@ -12,7 +12,7 @@ import java.util.Objects;
 @Primary
 @Component
 public class ClientValidator implements IValidator {
-    private static final String PATTERN = "CC-\\d{6}";
+    private static final String PATTERN = "^(CC|CE|P)-\\d{3,17}$";
     @Override
     public void checkMissingData(BindingResult errors) {
         if (errors.hasErrors()){
