@@ -108,8 +108,7 @@ public class ProductServiceImpl implements IProductService {
                 .toList();
     }
 
-    @Override
-    public Optional<ProductDto> findByFantasyName(String fantasyName) {
+    private Optional<ProductDto> findByFantasyName(String fantasyName) {
         return this.productRepository.findByFantasyName(fantasyName.toUpperCase())
                 .map(this.productMapper::mapToDto);
     }
