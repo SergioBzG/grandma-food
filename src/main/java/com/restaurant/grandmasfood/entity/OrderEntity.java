@@ -1,16 +1,14 @@
 package com.restaurant.grandmasfood.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,18 +28,18 @@ public class OrderEntity {
     @Column(unique = true)
     private UUID uuid;
 
+    //@CreationTimestamp
     @NotNull
-    @CreationTimestamp
-    private LocalDate creationDateTime;
+    private LocalDateTime creationDateTime;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Valid
+    @ManyToOne(targetEntity = ClientEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_document")
     @NotNull(message = "a client is required")
     private ClientEntity clientEntity;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Valid
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = ProductEntity.class)
     @JoinColumn(name = "product_uuid")
     @NotNull(message = "a product is required")
     private ProductEntity productEntity;
@@ -50,7 +48,6 @@ public class OrderEntity {
     private Integer quantity;
 
     @NotNull
-    @NotBlank(message = "extra information is required")
     @Size(max = 511)
     private String extraInformation;
 
@@ -63,11 +60,11 @@ public class OrderEntity {
     @NotNull(message = "a grand total is required")
     private Double grandTotal;
 
-    @Column(columnDefinition = "boolean default false")
+    //@Column(columnDefinition = "boolean default false")
     @NotNull
     private Boolean delivered;
 
-    private LocalDate deliveredDate;
+    private LocalDateTime deliveredDate;
 
     @Override
     public boolean equals(Object o) {

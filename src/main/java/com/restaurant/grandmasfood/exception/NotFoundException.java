@@ -3,7 +3,7 @@ package com.restaurant.grandmasfood.exception;
 import lombok.Getter;
 
 @Getter
-public class NotFoundException extends Exception {
+public class NotFoundException extends RuntimeException {
     private final String code;
 
     public NotFoundException(String code, String entityName, String attributeName) {

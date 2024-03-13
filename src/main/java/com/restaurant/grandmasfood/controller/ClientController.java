@@ -1,56 +1,55 @@
 package com.restaurant.grandmasfood.controller;
 
-import com.restaurant.grandmasfood.entity.ClientEntity;
 import com.restaurant.grandmasfood.model.ClientDto;
 import com.restaurant.grandmasfood.service.IClientService;
+import com.restaurant.grandmasfood.validator.impl.ClientValidator;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/clients")
 public class ClientController {
 
     private final IClientService clientService;
-
-    public ClientController(IClientService clientService) {
-        this.clientService = clientService;
-    }
+    private final ClientValidator validator;
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping
-    public void createClient(@RequestBody ClientDto clientDto) {
-      clientService.createClient(clientDto);
+    public ResponseEntity<ClientDto> createClient(@RequestBody @Validated ClientDto clientDto,
+                                                  BindingResult errors) {
+        validator.checkMissingData(errors);
+        return new ResponseEntity<>(clientService.createClient(clientDto), HttpStatus.CREATED);
     }
-
-   /* @GetMapping(path = "/{document}")
-    public Optional<Client> getClient(@PathVariable("document") String document) {
-        return clientService.getClient(document);
-    }*/
-
     @GetMapping(path = "/{document}")
-    public Optional<ClientDto> getClient(@PathVariable("document") String document){
-        return clientService.getClient(document);
+    public ResponseEntity<ClientDto> getClient(@PathVariable("document") String document){
+        validator.checkFormat(document);
+        return new ResponseEntity<>(clientService.getClient(document), HttpStatus.OK);
     }
-
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PutMapping(path = "/{document}")
-    public void updateClient(@PathVariable("document") String document, @RequestBody ClientEntity clientEntity) {
-        clientService.updateClient(document, clientEntity);
+    public ResponseEntity<?> updateClient(@PathVariable("document") String document,
+                                          @RequestBody @Validated ClientDto clientDto, BindingResult errors) {
+        validator.checkFormat(document);
+        validator.checkNoUpdatedDocument(document,clientDto.getDocument());
+        validator.checkMissingData(errors);
+        clientService.updateClient(document, clientDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{document}")
-    public void deleteClient(@PathVariable("document") String document) {
+    public ResponseEntity<?> deleteClient(@PathVariable("document") String document) {
+        validator.checkFormat(document);
         clientService.deleteClient(document);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
     @GetMapping
     public ResponseEntity<List<ClientDto>> getClients(@RequestParam(defaultValue = "DOCUMENT") String orderBy,
-                                     @RequestParam(defaultValue = "ASC") String direction) {
+                                                      @RequestParam(defaultValue = "ASC") String direction) {
         return new ResponseEntity<>(this.clientService.getOrderedClients(orderBy, direction), HttpStatus.OK);
     }
 }

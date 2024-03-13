@@ -1,7 +1,9 @@
 package com.restaurant.grandmasfood.service;
 
-public interface IOrderService {
-    String createOrder();
+import com.restaurant.grandmasfood.model.OrderDto;
+import java.time.LocalDateTime;
 
-    String deliverOrder();
+public interface IOrderService {
+    OrderDto createOrder(OrderDto orderDto);
+    OrderDto updateOrderDeliveredStatus(String uuid, LocalDateTime timestamp);
 }

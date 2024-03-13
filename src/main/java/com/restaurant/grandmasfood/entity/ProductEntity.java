@@ -43,7 +43,6 @@ public class ProductEntity {
     @NotNull
     private Double price;
 
-    @Column(columnDefinition =  "boolean default true")
     @NotNull
     private Boolean available;
 
@@ -63,4 +62,6 @@ public class ProductEntity {
     public int hashCode() {
         return Objects.hash(id, uuid, fantasyName, category, description, price, available, orderEntities);
     }
+
+
 }
