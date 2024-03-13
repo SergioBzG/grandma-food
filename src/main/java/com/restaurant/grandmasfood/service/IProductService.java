@@ -1,6 +1,8 @@
 package com.restaurant.grandmasfood.service;
 
 import com.restaurant.grandmasfood.model.ProductDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +13,7 @@ public interface IProductService {
     ProductDto getProductByUuid(UUID uuid);
     void updateProduct(ProductDto productDto, UUID uuid);
     void deleteProduct(UUID uuid);
-    List<ProductDto> findAll();
+    Page<ProductDto> findAll(Pageable pageable);
     Optional<ProductDto> findByFantasyName(String fantasyName);
     List<ProductDto> filterAllByFantasyName(String query);
 }

@@ -11,6 +11,8 @@ import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +55,6 @@ public class ProductServiceImpl implements IProductService {
                 );
     }
 
-//    @Transactional
     @Override
     public void updateProduct(ProductDto productDto, UUID uuid) {
         Optional<ProductEntity> savedOptionalProduct = this.productRepository.findByUuid(uuid);
@@ -92,10 +93,9 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductDto> findAll() {
-        return this.productRepository.findAll().stream()
-                .map(this.productMapper::mapToDto)
-                .toList();
+    public Page<ProductDto> findAll(Pageable pageable) {
+        return this.productRepository.findAll(pageable)
+                .map(this.productMapper::mapToDto);
     }
 
     @Override
