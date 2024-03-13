@@ -4,6 +4,8 @@ import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
 import com.restaurant.grandmasfood.validator.impl.ProductValidator;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -53,8 +55,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> listProducts() {
-        return new ResponseEntity<>(this.productService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<ProductDto>> listProducts(Pageable pageable) {
+        return new ResponseEntity<>(this.productService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/search")
