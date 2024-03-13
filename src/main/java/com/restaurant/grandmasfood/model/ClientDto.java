@@ -17,7 +17,7 @@ import java.util.Objects;
 public class ClientDto {
     @NotBlank(message = "a document is required")
     @Size(max = 20)
-    @Pattern(regexp = "CC-\\d{6}", message = "document format invalid")
+    @Pattern(regexp = "^(CC|CE|P)-\\d{3,17}$", message = "document format invalid")
     private String document;
 
     @NotBlank(message = "a name is required")

@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping(path = "/clients")
@@ -44,5 +46,10 @@ public class ClientController {
         validator.checkFormat(document);
         clientService.deleteClient(document);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping
+    public ResponseEntity<List<ClientDto>> getClients(@RequestParam(defaultValue = "DOCUMENT") String orderBy,
+                                                      @RequestParam(defaultValue = "ASC") String direction) {
+        return new ResponseEntity<>(this.clientService.getOrderedClients(orderBy, direction), HttpStatus.OK);
     }
 }
