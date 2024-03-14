@@ -47,6 +47,7 @@ public class OrderServiceImpl implements IOrderService {
                         "document")
                 );
         ProductEntity productEntity = productRepository.findByUuid(UUID.fromString(orderDto.getProductUuid()))
+                .filter(ProductEntity::getAvailable)
                 .orElseThrow(() -> new NotFoundException(ExceptionCode.PRODUCT_NOT_FOUND_CODE,
                         "Product",
                         "UUID"

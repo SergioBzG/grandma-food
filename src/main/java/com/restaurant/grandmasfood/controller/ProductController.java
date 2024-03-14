@@ -4,6 +4,7 @@ import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.service.IProductService;
 import com.restaurant.grandmasfood.validator.impl.ProductValidator;
 import lombok.AllArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> listProducts(Pageable pageable) {
+    public ResponseEntity<Page<ProductDto>> listProducts(@ParameterObject Pageable pageable) {
         return new ResponseEntity<>(this.productService.findAll(pageable), HttpStatus.OK);
     }
 
