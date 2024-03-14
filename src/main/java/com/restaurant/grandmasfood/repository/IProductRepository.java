@@ -1,12 +1,14 @@
 package com.restaurant.grandmasfood.repository;
 
 import com.restaurant.grandmasfood.entity.ProductEntity;
+import com.restaurant.grandmasfood.model.ProductDto;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,4 +21,7 @@ public interface IProductRepository extends JpaRepository<ProductEntity, Long>,
     Optional<ProductEntity> findByUuid(UUID uuid);
     @Query("SELECT p FROM ProductEntity p WHERE p.fantasyName LIKE %?1%")
     List<ProductEntity> filterAllByFantasyName(Sort sort, String query);
+
+
+    List<ProductEntity> findByAvailableTrue();
 }

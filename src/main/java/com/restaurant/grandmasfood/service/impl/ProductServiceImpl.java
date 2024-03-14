@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -111,5 +112,12 @@ public class ProductServiceImpl implements IProductService {
     private Optional<ProductDto> findByFantasyName(String fantasyName) {
         return this.productRepository.findByFantasyName(fantasyName.toUpperCase())
                 .map(this.productMapper::mapToDto);
+
+    }
+
+    @Override
+    public List<ProductDto> findByAvailableTrue() {
+        return this.productRepository.findByAvailableTrue()
+                .stream().map(this.productMapper::mapToDto).toList();
     }
 }
