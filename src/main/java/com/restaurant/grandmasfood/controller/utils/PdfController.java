@@ -73,6 +73,7 @@ public class PdfController {
             //Group products By Category
             Map<String, List<ProductDto>> productByCategory = new HashMap<>();
 
+
             for (ProductDto product : productsAvailables) {
                 String category = product.getCategory();
 
@@ -112,14 +113,18 @@ public class PdfController {
 
 
             }
+            float imageX = productX;
+            float imageY = productY - 500;
 
-//            PDImageXObject logo = PDImageXObject.createFromFile("/Logo.png", document);
+            PDImageXObject logo = PDImageXObject.createFromFile("C:\\Users\\af.alvarez\\Documents\\Training\\Java\\Spring-Boot\\Projects\\grandma-food\\src\\main\\resources\\static\\Logo.png", document);
 
-  //          contentStream.drawImage(logo, categoryY, productY, logo.getWidth(), logo.getHeight());
+            contentStream.drawImage(logo, imageX, imageY, logo.getWidth(), logo.getHeight());
+
+
+
 
 
             //Visualize product by category
-
 
             // for (ProductDto product : products) {
             //    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
