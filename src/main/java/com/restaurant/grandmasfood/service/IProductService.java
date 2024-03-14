@@ -1,6 +1,5 @@
 package com.restaurant.grandmasfood.service;
 
-import com.restaurant.grandmasfood.entity.ProductEntity;
 import com.restaurant.grandmasfood.model.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,18 +1,15 @@
 package com.restaurant.grandmasfood.controller.utils;
 
-import com.restaurant.grandmasfood.entity.CategoryProduct;
-import com.restaurant.grandmasfood.entity.ProductEntity;
+
 import com.restaurant.grandmasfood.model.ProductDto;
 import com.restaurant.grandmasfood.repository.IProductRepository;
 import com.restaurant.grandmasfood.service.IProductService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
